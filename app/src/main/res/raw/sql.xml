@@ -1,0 +1,17 @@
+<sql>
+
+    <statement>
+        CREATE TABLE IF NOT EXISTS tb_message(
+        _id INTEGER PRIMARY KEY AUTOINCREMENT,
+        firebaseid VARCHAR(500),
+        contador INTEGER,
+        numeracion INTEGER
+        )
+
+    </statement>
+    <statement>
+        INSERT INTO tb_message (
+        firebaseid,contador) VALUES ("prueba","1","1")
+    </statement>
+
+</sql>

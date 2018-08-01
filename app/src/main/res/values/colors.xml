@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#66ce95</color>
+    <color name="colorPrimaryDark">#2f9d61</color>
+    <color name="colorAccent">#757575</color>
+    <color name="colorAccentShade">#ffd740</color>
+    <color name="colorAccentLigth">#ffe57f</color>
+    <color name="colorPrimaryText">#FFFFFF</color>
+    <color name="colorSecondaryText">#0a0906</color>
+    <color name="colorTheText">#757575</color>
+    <color name="colorDivider">#fafafa</color>
+    <color name="error">#FF0031</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="fondo">#ededed</color>
+    /*others */
+    <color name="colorFacebook">#3b5998</color>
+    <color name="colorTwitter">#55acee</color>
+    <color name="colorEmail">#d44539</color>
+    <color name="chat">#cfcfcf</color>
+</resources>

@@ -1,0 +1,276 @@
+<resources>
+    <string name="app_name">Spoon Pot</string>
+    <string name="facebook_app_id">229927777473591</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="error_login_pass">Contraseña Incorrecta</string>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="error_user">Un usuario con este correo electrónico ya existe</string>
+    <string name="error_mail">Ingrese un Email Valido</string>
+    <string name="error_pass">Ingrese Contraseña</string>
+    <string name="error_repass">Confirmar Contraseña distinto</string>
+    <string name="auth">Autenticando</string>
+    <string name="user_create">Usuario creado \n Por Favor Valide su email</string>
+    <string name="error">Error</string>
+    <string name="permissions">La Aplicación Necesita de permisos</string>
+    <string name="email">Correo</string>
+    <string name="pass">Contraseña</string>
+    <string name="repass">Repetir Contraseña</string>
+    <string name="recovery">Recuperar Contraseña</string>
+    <string name="login_twitter">Inicia sesión con Twitter</string>
+    <string name="login_facebook">Inicia sesión con Facebook</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="register">Guardar</string>
+    <string name="error_email">Para acceder a la aplicacion \n Primero verifique su email!!!</string>
+    <string name="add">Agregar</string>
+    <string name="favorite">Favorito</string>
+    <string name="location">Localización</string>
+    <string name="search">Busqueda</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="yes">SI</string>
+    <string name="no">NO</string>
+    <string name="exit">Esta seguro que desea salir?</string>
+    <string name="espanol">Español</string>
+    <string name="english">Inglés</string>
+    <string name="help">Ayuda</string>
+    <string name="config">Ajustes</string>
+    <string name="share">Compartir APP</string>
+    <string name="share22">Facebook</string>
+    <string name="share23">Email</string>
+    <string name="share24">Whatapp</string>
+    <string name="share25">SMS</string>
+
+    <string name="spoot">¿Qué es Spoot Pot?</string>
+    <string name="what">¿Cómo Compartir Comida?</string>
+    <string name="terminos">Términos y condiciones</string>
+    <string name="terminos1">Los términos y condiciones aquí descritos están hechos para regular el uso que pueda darse a este sitio web y su aplicación para móviles, así como a los contenidos presentes en la misma. Estos Términos y Condiciones pueden ser cambiados en cualquier momento y sin ningún aviso, únicamente se harán públicos los cambios en el sitio Web. Al hacer uso de este sitio usted está aceptando este acuerdo al igual que cada uno de los Términos y Condiciones contenidos en el mismo y que hacen referencia al uso de este, ya sea que usted se convierta en un usuario registrado o no. Estos términos rigen su acceso y el uso de que puede dársele a este sitio y a los contenidos que en ella se encuentran, constituyendo un contrato vinculante entre usted y Spoon Pot. Se le recomienda imprimir una copia de estos términos y condiciones para sus archivos, así mismo si los términos son cambiados se le recomienda tener una copia de este documento actualizado, usted no podrá alegar desconocimiento de este documento en cualquier caso que se suscite.\n\r\nAnte el incumplimiento de cualquiera de los términos y condiciones descritos aquí, Spoon Pot se reserva el poder de eliminar la cuenta y usuario de donde se haya producido en incumplimiento.\n\r\nAl aceptar estos términos acepta que Spoon Pot no se hará responsable de cualquier contenido, imagen o información que usted comparta, consintiendo hacer uso de los mismos bajo su propia responsabilidad y riesgo.\n\r\nEs importante que usted sepa que Spoon Pot actuará sola y exclusivamente como intermediario entre los usuarios y cocineros, de ninguna manera ofrece otros servicios como preparación o la entrega de comidas. Spoon Pot no controla ni se hace responsable de los servicios ofrecidos por los cocineros que se anuncian por medio de nuestro sitio web, en ningún momento elegimos el menú ni los ingredientes, ni el nivel de calidad que deberían ofrecerse a través de nuestro sitio, debido a esto la responsabilidad única y exlusivamente, por los servicios prestados en Spoon Pot es tanto para el cocinero como para el usuario inscrito en nuestro sitio web, quien deberá tomar todas las precauciones que sean necesarias para proteger su salud y seguridad; en ningún momento Spoon Pot puede asegurar la buena voluntad de cada uno de los usuarios de nuestro sitio web, así como es también la contratación de los servicios anunciados en Spoot Pot y elección de tipo de servicio, cocinero, calidad de la comida preparada, verificación de que el cocinero cumple con los requisitos legales y sanitarios para la realización de dichos servicios, se harán bajo el riesgo del usuario, Spoon pot no será responsable por negligencia de falta de veracidad de los servicios ofertados por los cocineros que aquí se anuncian ni por los daños derivados de la actuación de los mismos a terceros.\n\r\n
+El usuario deberá reclamar responsabilidad si correspondiera, al cocinero contratado y en caso de no haber responsabilidad determinable, el usuario siempre podrá valorar con su opinión el servicio recibido, siendo este el mejor garante para la excelencia del servicio y la información al usuario interesado en futuros servicios de dicho profesional. Las opiniones y evaluaciones de los servicios prestados por los cocineros deben ser justas, honestas y razonables.\n\r\n
+
+El usuario deberá notificar inmediatamente a Spoon Pot en el caso de que se tenga alguna razón para creer o sospechar que uno de nuestros cocineros o usuario de cualquier tipo, está incumpliendo los términos de servicio o que el perfil de un cocinero no es veraz o es falso, impreciso o de cierta manera incompleto, donde Spoon Pot se compromete a averiguar más sobre el tema y se tomarán las medidas que se crean pertinentes con respecto a esta cuenta.\n\r\n
+
+Este contrato permite a los cocineros o chefs definir sus propias condiciones particulares en cuanto a entrega de pedidos incluidos en este apartado lugar y hora de entrega y también el cobro de las mismas y su método de pago, ya que en ningún momento Spoon Pot cobrará o retendrá dinero por los servicios que el cocinero presta.\n\r\n
+
+Sin ánimo de perjudicar a nadie ni a otro término expuesto en el presente acuerdo, Spoon Pot no se hará responsable de los daños por pérdidas, transporte o costos que puedan surgir como resultado de las modificaciones en el servicio hechas por usted o cuando los servicios prestados se realicen fuera del contexto de esta web directamente con el cocinero.\n\r\n
+
+Spoon Pot y sus servicios están dirigidos únicamente a personas mayores de 18 años o tener capacidad legal para llevar a cabo un contrato, al aceptar este contrato usted está aceptando que es mayor de 18 años y que de ninguna manera puede desvincularse de este contrato.\n\r\n
+
+Cada uno de los elementos contenidos en el sitio Web de Spoon Pot como su editorial, gráficos, aplicaciones, software y sus características, con la excepción de contenido de usuario, son propiedad exclusiva de Spoon Pot y sus legítimos propietarios. Cualquier reproducción, imitación o inserción ya sea en su totalidad o en parte, de cualquiera de los elementos del contenido en el sitio web perteneciente a Spoon Pot está estrictamente prohibido sin el consentimiento previo por escrito de Spoon Pot.\n\r\n
+
+Este contrato faculta a Spoon Pot con el poder de modificar o eliminar cualquier información, datos que no sean estrictamente relacionados con los servicios que provee nuestro sitio web.\n\r\n
+
+Entre usted y Spoon Pot son dueños únicos y exclusivos de todo contenido (fotografías, contenido escrito, etc.) y datos de mismo, el aspecto y ambiente, el diseño y la organización de la web. Su uso del Sitio Web no le otorga propiedad de ninguno de los contenidos, materiales o datos a los que pueda acceder en o a través del sitio web. Pero al mismo tiempo usted está asumiendo que toda información colocada en este sitio es de su propiedad y usted es el único responsable del contenido que se presenta en la misma, y asume toda la responsabilidad ante cualquier caso de que se tomen medidas legales por el uso de dicha información o por el contenido de la misma.\n\r\n
+
+Usted puede acceder y ver el contenido del sitio web desde su computadora o desde la aplicación para teléfono móvil u otro aparato, a menos de que se indique de otra manera en estos Términos y Condiciones o en el sitio web, hacer copias del contenido del sitio web para su uso personal, interno únicamente. El uso del Sitio Web y de los servicios que se ofrecen en o a través del sitio web, son sólo para su uso personal, no comercial.\n\r\n
+
+Cualquier distribución, publicación o explotación comercial o promocional del sitio web, o de cualquiera de los contenidos, datos o materiales en el sitio web, está estrictamente prohibida, a menos que tenga permiso expreso por escrito del personal autorizado, o de algún otro poseedor de derechos aplicable. A no ser como está expresamente permitido en el presente contrato, usted no puede informar, exponer, publicar, copiar, distribuir, modificar, difundir, crear trabajos derivados de, vender o de cualquier otra manera explotar cualquiera de los contenidos, datos o materiales en o disponibles a través del sitio web. Usted se obliga además a no alterar, editar, borrar, quitar o de otra manera cambiar el significado o la apariencia de, o cambiar a propósito de, cualquiera de los contenidos, datos o materiales en o disponibles a través del sitio web, incluyendo, sin limitación, la alteración o retiro de cualquier marca comercial, marca registrada, logo, marca de servicios o cualquier otro contenido de propiedad o notificación de derechos de propiedad. Usted reconoce que no adquiere ningún derecho de propiedad al obtener algún material a través del sitio web.\n\r\n
+
+En el curso del uso que usted haga del sitio web y o de los servicios puestos a su disposición en o a través del sitio web, se le puede pedir que nos proporcione cierta información personalizada. Las políticas de uso y recopilación de información de Spoon Pot con respecto a la privacidad de dicha información del usuario se establecen en la Política de Privacidad del Sitio Web, la cual está incorporada al mismo como referencia para todos los propósitos. Usted reconoce y acepta ser el único responsable de la exactitud del contenido de la información del usuario.\n\r\n
+
+A menos que se le solicite específicamente, no pedimos ni deseamos recibir ninguna información confidencial, secreta o patrimonial, ni otro material de usted a través del sitio web, por correo electrónico o de cualquier otra manera. Cualquier información que nos haya mandado o presentado (incluyendo, por ejemplo y sin limitación, aquello que usted presenta o envía a nuestros grupos de chateo, tablas de mensajes o nuestros blogs, o que nos manda vía correo electrónico) se considerará como no confidencial o secreto y que puede ser usado por nosotros de cualquier manera consistente con la política de privacidad del Sitio Web.\n\r\n
+
+Usted garantiza y está de acuerdo en que, mientras use el sitio web y los diversos servicios que se ofrecen a través del sitio web, usted no: a) personalizará a ninguna persona o entidad ni desvirtuará su afiliación con alguna otra persona o entidad; b) insertará su propio anuncio, posicionamiento de marca o algún otro contenido o de un tercero en cualquiera de los contenidos, información o servicios, ni usará, redistribuirá o explotará dichos contenidos o servicio con cualquier propósito adicional. c) no intentará ganar acceso no autorizado a otros sistemas de cómputo a través del sitio web.\n\r\n
+
+No existe responsabilidad de Spoon Pot hacia el cocinero, ya que Spoon Spot no cobrará ningún tipo de comisión de ninguna manera, spoon pot se limitará a mostrar las recetas, platillos, y ubicación para que los usuarios puedan encontrarlos, también de contar con un herramientas que le ayuden a promocionarse y tener un contacto directo con los usuarios de este sitio web.\n\r\n
+
+Spoon pot se reserva el derecho de suspender temporalmente el acceso a sus servicios por razones técnicas o de mantenimiento sin que estas circunstancias otorguen derechos de indemnización alguna.\n\r\n
+
+Spoon Pot no se hace responsable bajo ninguna circunstancia de los servicios que se ofrecen de forma gratuita en nuestro sitio web.\n\r\n
+
+El usuario se compromete a cumplir bajo su propia responsabilidad las normas fiscales, administrativas y normativas civiles que podría aplicarse a la persona ya sea como cocinero o como usuario; Spoon pot en ningún caso se hará responsable de la violación de un usuario de cualquier regulación o norvativa aplicale.\n\r\n
+</string>
+    <string name="terminos2">Terminos para Cocineros</string>
+    <string name="terminos3">Si eres cocinero y estás interesado en el uso de nuestros servicios, deberás hacerlo de acuerdo con estos términos y condiciones de servicio, además de aquellos aquí establecidos que rigen con carácter general para todos los usuarios. Será responsabilidad del cocinero, cumplir con la legislación vigente en esta materia. Los cocineros que quieran ofrecer sus servicios mediante la aceptación de estos términos, manifiestan conocer y cumplir con la legislación vigente en su territorio, así como tener todos los permisos y licencias necesarios para el desarrollo de los mismos, en caso de no ser así cada cocinero será responsable única y exclusivamente de los cargos que puedan aplicársele por medio de la justicia local en su territorio.\n\r\n
+
+Al registrarte en Spoon Pot, consientes que este efectúe las comprobaciones que se necesiten para poder verificar tu identidad. Dicha verificación de identidad le distinguirá de otros cocineros no verificados y otorgará mayor confianza al cliente a la hora de elegirle como proveedor.\n\r\n
+
+A través de aceptar anunciarte por medio de Spoon Pot y registrarte, como cocinero para comercializar tus platillos, menús, recetas, manifiestas que toda la información que sea colocada en tu perfil respecto a la preparación, provisión o envío de los menús, y cualquier otra información facilitada estando incluidas pero no limitadas los ingredientes de los menús o comentarios hechos a otros usuarios serán verdaderos, correctos y actualizados además de cumplir con los estándares de la industria en la que operas, no vulnerará ninguna ley o regulación al respecto, incluidas las buenas prácticas de manufactura en cuanto a higiene en la preparación de los menús y cuando resulte aplicable, las normas de seguridad alimentaria basadas en los estándares fijados por el ministerio de sanidad para cada momento; no vulnerar ni romper la legislación sobre sanidad, consumo así como no publicar contenido ni comunicarse con otros usuarios de manera obscena o difamatoria y si cualquier usuario intenta contactarle directamente sin utilizar los servicios de Spoon Pot, deberá ignorarlo o de lo contrario Spoon Pot quedará facultado para eliminar el perfil de usuario y cocinero implicados.
+
+Al hacer uso de los servicios de Spoon Pot se garantiza que eres el proveedor de los servicios anunciados, te comprometes a mantener a confidencialidad de toda la información, comunicación y correspondencia con los usuarios y la información relativa a proceso de pedido, al igual de comprometerse a notificar a Spoon pot de cualquier sospecha de incumplimiento de estos términos por parte de cualquier otro cocinero, con respecto al etiquetado de alimentos se hace imprescindible cumplir con las normas de etiquetado de los productos alimenticios para que los consumidores dispongan de información esencial, legible y comprensible y puedan comprar dichos productos con conocimientos de causa. Por motivos de seguridad pública, las nuevas normas refuerzan la protección contra alérgenos y de esta manera queda obligado a proporcionar la información que se encuentre en la composición de los alimentos empleados para la elaboración de los platos. Dicha información podrá darse de manera verbal o escrita. Además, consientes que spoon pot, ante cualquier sospecha de incumplimiento de estos términos, incumplimientos de los estándares o requisitos de Spoon Pot para anunciarte en nuestro sitio web o sospecha de falsedad de tu perfil, elimine dicho perfil bajo su más absoluta discrecionalidad y previa notificación por escrito al cocinero.\n\r\n
+
+Este contrato se da por terminado al momento que eliminas tu cuenta de usuario de las bases de datos de Spoon Pot, sin embargo, el hecho de que se suprima contenido de usuario puede ser copiado y guardado con fines de archivo y, en particular, para que pueda defender sus derechos en caso de necesidad y de manera irrevocable y expresamente reconoce y autoriza a hacerlo.\n\r\n
+
+USTED RECONOCE HABER LEIDO Y ENTENDIDO ESTE ACUEDO Y HABLER TENIDO LA OPORTUNIDAD DE CONSULTAR CON UN ASESOR LEGAL INDEPENDIENTE ANTES DE SU FORMALIZACION, USTED SE COMPROMETE A CUMPLIR LAS CLAUSULAS Y CONDICIONES DE ESTE ACUERDO ASIMISMO RECONOCE QUE EL PRESENTE ES EL ACUERDO INTEGRO Y EXCLUSIVO FORMALIZADO ENTRE USTED Y SPOON POT, EL CUAL ANULA CUALQUIER CONTRATO O ACUERDO ANTERIOR, YA SEA ORAL O ESCRITO Y CUALQUIER OTRA FORMA DE COMUNICACIÓN ENTRE AMBAS PARTES RELACIONADAS CON EL CONTENIDO DE ESTE ACUERDO.\n\r\n
+</string>
+
+
+    <string name="condition">Políticas de prívacidad</string>
+    <string name="condition1">Spoon Pot es una empresa comprometida con la privacidad de sus miembros, por lo cual solo tú puedes controlar con quien compartir cualquier información guardada en este sitio, conforme a las configuraciones de privacidad que tengas en tu perfil. Tu nombre de usuario, así como tu foto de perfil serán visibles por todos los usuarios de Soon Pot.\n\r\n
+
+Spoon Pot podrá pedirte datos personales, así como dirección, número de teléfono, nombre, edad, con el fin ofrecer un mejor servicio a todos nuestros miembros, esta información podrá ser compartida a terceros, sean anunciantes nuestros o no para que estos ofrezcan sus servicios, ofertas, promociones u otro tipo de información relacionada o no al servicio que se ofrece en Spoon pot.\n\r\n
+
+Con respecto a las visitas que hagas a nuestra página, aplicación podremos recoger, de acuerdo con la legislación aplicable y , cuando así sea necesario, con tu consentimientos, información referente a los dispositivos que empleas y las redes a las que te conectas cuando haces uso de nuestros servicios. Esto puede incluir por ejemplo pero sin limitación: tu dirección IP, información de conexión, tipo y versión de navegador, tipos y versiones de los plugins o complementos de tu navegador sistema operativo y plataforma información sobre tu visita incluido el historial detallado de la url, a través y desde nuestra página y aplicación, productos que hayas visto o buscado, errores de descarga duración de las visitas a determinadas páginas, interacciones con la página.\n\r\n
+
+Podríamos utilizar cookies para localizar tu posición y así mostrarte opciones de personas que estén cercanas a tu posición.\n\r\n
+</string>
+    <string name="select_language">Seleccione Idioma</string>
+    <string name="close">Cerrar</string>
+    <string name="iniciar">Inicia sesión con:</string>
+    <string name="or">O</string>
+    <string name="login_mail">Inicia sesión con tu email</string>
+    <string name="nombre">Nombres</string>
+    <string name="apellido">Apellidos</string>
+    <string name="fecha">Fecha de Nacimiento</string>
+    <string name="mujer">Mujer</string>
+    <string name="hombre">Hombre</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="recontrasena">Repetir Contraseña</string>
+    <string name="tipoplato">Tipo de plato</string>
+    <string name="detalleplato">Detalles del plato</string>
+    <string name="nombreplato">Nombre del plato</string>
+    <string name="desplato">Descripción</string>
+    <string name="costesplato">Costes</string>
+    <string name="text1">Regístrate con tu email o\n con Facebook</string>
+    <string name="text2">Sube o busca tu plato</string>
+    <string name="text3">Comparte la app con tus\n amigos o otros cocineros</string>
+    <string name="text4">Llega a un acuerdo y\n comparte la comida</string>
+    <string name="text5">Ahorra tiempo y dinero\n compartiendo comida</string>
+    <string name="perfil">Perfil</string>
+    <string name="notificacion">Notificación</string>
+    <string name="costegeneral">Coste general</string>
+    <string name="raciones">Raciones Totales</string>
+    <string name="rofrezco">Raciones que Ofrezco</string>
+    <string name="drecogida">Detalle de la recogida</string>
+    <string name="hrecogida">Hora de recogida</string>
+    <string name="dia">Día</string>
+    <string name="dire">Dirección</string>
+    <string name="infoc">Información Complementaría</string>
+    <string name="diabeticos">Apto para diabéticos</string>
+    <string name="celiaticos">Apto para celíaticos</string>
+    <string name="opcional">Opcional</string>
+    <string name="foto">Añadir Fotografía</string>
+    <string name="camera">Cámara</string>
+    <string name="sd">Galería</string>
+    <string name="image">Seleccione Imagen</string>
+    <string name="help1">QUIERO FORMAR PARTE DE SPOON POT...\n¿QUÉ TENGO QUE HACER?</string>
+    <string name="help2">Es tan sencillo como entrar y registrarse. Una vez que formes parte de Spoon Pot podrás tanto convertirte en cocinero y compartir tus platos, como degustar los platos que se ofrecen de otros cocineros. ¡Tú decides!</string>
+    <string name="help3">UNA COMUNIDAD CERCANA Y DE CONFIANZA</string>
+    <string name="help4">En Spoon Pot los usuarios eligen qué platos ofrecer y a quién. Es una plataforma en la que buscamos que los usuarios ganen en comodidad y calidad de vida, ahorrando dinero y tiempo.\n\r\nPor otra parte, los usuarios deben dejar una valoración del servicio que han recibido para que otros usuarios puedan elegir con quién compartir comida. Además, todo el contenido publicado por los usuarios podrá ser moderado por Spoon Pot para mejorar el servicio y que todo vaya como la seda.</string>
+    <string name="share1">¿Te gusta cocinar pero te da pereza para ti solo?
+¿Crees que gastas mucho dinero cocinando para ti solo?</string>
+    <string name="share2">¿Quieres darte un festín, ahorrarte unas pelas y
+disfrutar de tu tiempo? ¿Llegas cansado del curro sin ganas
+de meterte en la cocina?</string>
+    <string name="share3">¿ERES COCINERO?</string>
+    <string name="share4">¿ERES COMENSAL?</string>
+    <string name="chef1">Cocinero</string>
+    <string name="chef2">Publica tu plato</string>
+    <string name="chef3">Indica la comida que ofreces, la hora de recogida, el importe del plato y las raciones totales. Spoon Pot se encarga de dividir el precio total para establecer el coste de la ración. El cocinero debe indicar cuántas raciones oferta. Al recibir solicitudes de los usuarios, debe escoger entre la Confirmación Manual o la Confirmación Automática: con la Confirmación Manual aceptas tú mismo la reserva de cada comensal y con la Confirmación Automática, la aceptación será inmediata.</string>
+    <string name="chef4">Tus comensales reservan la comida</string>
+    <string name="chef5">Los comensales reservan la comida y Spoon Pot te envía automáticamente una notificación por cada nueva reserva para que tú la valides. Una vez validada, contactas directamente con los comensales para acordar los últimos detalles de la recogida.</string>
+    <string name="chef6">Entrega de la comida</string>
+    <string name="chef7">Acude al punto de encuentro a la hora acordada para la entrega de la comida.</string>
+    <string name="chef8">Recibe tu dinero</string>
+    <string name="chef9">Una vez entregada la comida, el comensal deberá abonar el coste de la ración. Para ello podrá escoger entre dos opciones: pagar en el momento o acumular la deuda con el cocinero para cancelarla posteriormente. Spoon Pot se encargará de recodarte la deuda pendiente con cada comensal.</string>
+    <string name="diner1">Comenasal</string>
+    <string name="diner2">Busca tu comida</string>
+    <string name="diner3">Indica tu ubicación, tus preferencias de comida, la fecha y hora en la que quieres degustar el pedido y escoge entre todos los cocineros que han publicado sus platos o sugiere a algún cocinero que te gustaría probar su plato otro día.</string>
+    <string name="diner4">Reserva tu plato</string>
+    <string name="diner5">Reserva tu ración y en el momento se enviará una notificación al cocinero para avisarle. Contacta con el cocinero para ultimar los detalles de la recogida del pedido.</string>
+    <string name="diner6">Recoge tu comida</string>
+    <string name="diner7">Acude al punto de encuentro a la hora indicada con el chef, acuerda con él la forma de pago y ¡Buen provecho!</string>
+    <string name="spoon1">Spoon Pot es una plataforma que pone en contacto a sus usuarios para compartir comida y gastos.\nLa idea principal de Spoon Pot es conectar a personas que les apasiona cocinar con aquellas a las que les gusta disfrutar de la comida casera pero no disponen de tiempo. Además, otro de sus objetivos primordiales es reducir el gasto energético y disminuir el desperdicio de alimentos fomentando el consumo colaborativo.\n\r\nSpoon Pot es una plataforma destinada especialmente para compartir comida y gastos con las personas de tu entorno (amigos, familiares, vecinos, compañeros de trabajo…) y los más atrevidos pueden conocer personas cercanas también dispuestas a compartir.\n\r\nLos usuarios de Spoon Pot comparten los gastos de la comida sin obtener beneficio. Spoon Pot recomienda en la plataforma que los cocineros no olviden incluir en el precio de sus platos los gastos extras que no son ingredientes de la lista de la compra, como son agua, luz, gas, etc. </string>
+    <string name="spoon2">¿Preparado para compartir? </string>
+    <string name="language">Idiomas</string>
+    <string name="end">Salir</string>
+    <string name="config1">En línea</string>
+    <string name="config2">On</string>
+    <string name="config3">Perfil</string>
+    <string name="config4">Notificaciones</string>
+    <string name="config5">Ayuda</string>
+    <string name="error_plato">Ingrese nombre del plato</string>
+    <string name="error_des">Ingrese descripción del plato</string>
+    <string name="error_costo">Ingrese costo</string>
+    <string name="error_raciones">Ingrese cantidad de raciones</string>
+    <string name="error_ofrezco">Ingrese raciones que ofrece</string>
+    <string name="error_hora">Ingrese hora de recogida</string>
+    <string name="error_dia">Ingrese dia de recogida</string>
+    <string name="error_tipo">Esoja un Tipo de Plato</string>
+    <string name="error_imagen">Seleccione una Imagen</string>
+    <string name="publicar">Publicar</string>
+    <string name="guardar">Guardar en Favoritos</string>
+    <string name="fotos">Fotografías</string>
+    <string name="addplato">Plato Guardado</string>
+    <string name="profile">Para poder usar la app debe de completar su perfil</string>
+    <string name="error_name">Ingrese su nombre</string>
+    <string name="error_lastname">Ingrese su apellido</string>
+    <string name="error_fecha">Ingrese su fecha de cumpleaños</string>
+    <string name="error_location">Ubicación no Encontrada</string>
+    <string name="error_biografia">Ingrese su Biografía</string>
+
+    /* twitter*/
+    <string name="twitter_consumer_key">iwm7wzpmJvzw6WqNzcWW5sjVP</string>
+    <string name="twitter_consumer_secret">l9ZOSAhnCuJfkelu11F7dej7MpJ72IXocgfYalPjg9pG1wxrCd</string>
+
+    <string name="user">Usuarios</string>
+    <string name="recipe">Recetas</string>
+    <string name="yrecipe">Tus Recetas</string>
+    <string name="detail">Detalles</string>
+    <string name="alerg">Alérgenos</string>
+    <string name="diabetico">Diabéticos</string>
+    <string name="celiatico">Celíaticos</string>
+    <string name="reservar">Reservar</string>
+    <string name="reserva">Reserva</string>
+    <string name="location2">Ubicación Actual</string>
+    <string name="friend_add">Friend Agregado</string>
+    <string name="friend_no">Friend Agregado</string>
+
+    <string name="seguidores">0 \n Seguidores</string>
+    <string name="seguidos">0 \n Seguidos</string>
+    <string name="recetas">0 \n Recetas</string>
+
+    <string name="seguidores2">Seguidores</string>
+    <string name="seguidos2">Seguidos</string>
+    <string name="recetas2">Recetas</string>
+    <string name="biografia">Biografía</string>
+    <string name="valoraciones">Valoraciones</string>
+    <string name="pagos">Pagos Pendientes</string>
+    <string name="men">Hombre</string>
+    <string name="woman">Mujer</string>
+    <string name="gender">Sexo</string>
+    <string name="sms">Mensajes</string>
+    <string name="noti">Notificaciones</string>
+    <string name="reserva_ok">Reserva Realizada</string>
+    <string name="delete">Desea borrar la notificación?</string>
+    <string name="aprovate">Desea aprobar la reserva ?</string>
+    <string name="reserva_apro">ha sido confirmada</string>
+    <string name="add_plato">Ha agregado un nuevo plato</string>
+    <string name="cantidad">Cantidad</string>
+    <string name="valorap">Valorar Plato</string>
+    <string name="anadirc">Añadir un comentario</string>
+    <string name="valorac">Valorar Cocinero</string>
+    <string name="valorar">Valorar</string>
+    <string name="valorarpen">Valoraciones pendientes</string>
+    <string name="calificacion">Gracias por su calificación</string>
+    <string name="valorarc">Valorar comensal</string>
+    <string name="valorareci">Has recibido un Valoración</string>
+    <string name="deuda">Deuda</string>
+    <string name="seguidor">Tiene un nuevo Seguidor</string>
+    <string name="like">Le gusta tu plato</string>
+    <string name="vibrate">Vibración</string>
+    <string name="light">Luz</string>
+    <string name="sonido">Sonido</string>
+    <string name="noplato">Usuario no posee plato</string>
+    <string name="platomas">Platos más populares</string>
+    <string name="usuriomas">Usuarios más populares</string>
+    <string name="platosoli">Platos \n solidarios</string>
+    <string name="platosotro">Otros platos</string>
+    <string name="pastas">Pastas</string>
+    <string name="ensaladas">Ensaladas</string>
+    <string name="arroces">Arroces</string>
+    <string name="pizzas">Pizzas</string>
+    <string name="sopas">Sopas</string>
+    <string name="carnes">Carnes</string>
+    <string name="pescados">Pescados</string>
+    <string name="postres">Postres</string>
+    <string name="platoS">Platos Solidarios</string>
+    <string name="agotada">Agotada</string>
+    <string name="amenos">Receta a menos de</string>
+    <string name="amas">Receta a mas de</string>
+    <string name="restablecer">Restablecer Contraseña</string>
+    <string name="title_activity_maps2">Map</string>
+    <string name="sugerir">Deseo este plato</string>
+    <string name="deseo">Desea probar este plato</string>
+    <string name="sugerir_enviada">Sugerencia enviada</string>
+    <string name="acepte_terminos">Por favor acepte los términos y condiciones</string>
+</resources>
