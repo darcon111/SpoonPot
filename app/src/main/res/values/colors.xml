@@ -17,4 +17,5 @@
     <color name="colorTwitter">#55acee</color>
     <color name="colorEmail">#d44539</color>
     <color name="chat">#cfcfcf</color>
+    <color name="link">#0000ff</color>
 </resources>

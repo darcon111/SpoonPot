@@ -36,7 +36,7 @@ import app.com.spoonpot.config.Constants;
 import app.com.spoonpot.holder.Notificacion;
 import app.com.spoonpot.holder.Pagos;
 import app.com.spoonpot.holder.User;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 
 public class ValoracionActivity extends AppCompatActivity {
 
@@ -58,11 +58,7 @@ public class ValoracionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);

@@ -41,8 +41,8 @@ import app.com.spoonpot.R;
 import app.com.spoonpot.clases.GPS;
 import app.com.spoonpot.config.AppPreferences;
 import app.com.spoonpot.holder.User;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 public class RegisterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -52,18 +52,16 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     private FirebaseUser user;
     private DatabaseReference databaseUsers;
     private EditText txtname,txtapellido,txtfecha,txtbiografia;
-    private AlertDialog.Builder mensaje;
+
     private SwitchButton sb;
     private AppPreferences app;
     private User Utemp;
 
+    private SweetAlertDialog pDialog;
+
  @Override
     protected void onCreate(Bundle savedInstanceState) {
-     CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-             .setDefaultFontPath("fonts/RobotoLight.ttf")
-             .setFontAttrId(R.attr.fontPath)
-             .build()
-     );
+
          setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
@@ -244,23 +242,22 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         }
         if(!error.equals(""))
         {
-            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-                mensaje = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog));
-            }
-            else {
-                mensaje = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog));
-            }
-            mensaje
-                    .setTitle(getText(R.string.error))
-                    .setMessage(error)
-                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
 
-                        }
-                    });
 
-            mensaje.show();
+
+            pDialog= new SweetAlertDialog(RegisterActivity.this, SweetAlertDialog.ERROR_TYPE);
+            pDialog.setTitleText(getResources().getString(R.string.app_name));
+            pDialog.setContentText(error);
+            pDialog.setConfirmText(getResources().getString(R.string.ok));
+            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    sDialog.dismissWithAnimation();
+
+                }
+            });
+            pDialog.show();
+
             return;
         }
         gps.getLocation();
@@ -298,9 +295,6 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
 
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 }

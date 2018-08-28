@@ -33,7 +33,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.text.Line;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -63,8 +62,7 @@ import app.com.spoonpot.holder.Like;
 import app.com.spoonpot.holder.Notificacion;
 import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 import static app.com.spoonpot.config.Constants.compareDate;
 
@@ -104,11 +102,7 @@ public class DescripcionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -864,10 +858,7 @@ public class DescripcionActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 
 }

@@ -37,11 +37,11 @@ import app.com.spoonpot.adapter.PagerAdapter;
 import app.com.spoonpot.clases.BottonNavigationView.BottomNavigationViewEx;
 import app.com.spoonpot.clases.Screen;
 import app.com.spoonpot.config.AppPreferences;
+import app.com.spoonpot.config.Constants;
 import app.com.spoonpot.helpers.BottomNavigationShiftHelper;
 import app.com.spoonpot.holder.User;
 import q.rorbin.badgeview.QBadgeView;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 
 public class FavoritoActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
@@ -57,11 +57,7 @@ public class FavoritoActivity extends AppCompatActivity implements TabLayout.OnT
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorito);
@@ -173,6 +169,12 @@ public class FavoritoActivity extends AppCompatActivity implements TabLayout.OnT
 
         badgeView = new QBadgeView(this);
         NotiTask();
+
+        if(app.getFavorito().equals("0"))
+        {
+            Constants.explicativo(FavoritoActivity.this,getString(R.string.favorito));
+            app.setFavorito(1);
+        }
 
     }
 
@@ -300,9 +302,6 @@ public class FavoritoActivity extends AppCompatActivity implements TabLayout.OnT
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 }

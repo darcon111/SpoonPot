@@ -13,8 +13,7 @@ import android.view.MenuItem;
 import app.com.spoonpot.R;
 import app.com.spoonpot.adapter.TourFragmentPagerAdapter;
 import app.com.spoonpot.config.AppPreferences;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class ChefActivity extends AppCompatActivity {
 
@@ -32,11 +31,7 @@ public class ChefActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef);
@@ -90,10 +85,7 @@ public class ChefActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 
 }

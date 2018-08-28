@@ -51,8 +51,7 @@ import app.com.spoonpot.config.AppPreferences;
 import app.com.spoonpot.helpers.BottomNavigationShiftHelper;
 import app.com.spoonpot.holder.User;
 import q.rorbin.badgeview.QBadgeView;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class NotificationActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
 
@@ -78,11 +77,7 @@ public class NotificationActivity extends AppCompatActivity implements TabLayout
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
@@ -423,10 +418,7 @@ public class NotificationActivity extends AppCompatActivity implements TabLayout
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 
 }

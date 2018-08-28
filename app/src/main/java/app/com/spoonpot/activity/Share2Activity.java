@@ -32,8 +32,7 @@ import java.util.List;
 import app.com.spoonpot.R;
 import app.com.spoonpot.holder.Like;
 import app.com.spoonpot.holder.Link;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class Share2Activity extends AppCompatActivity {
 
@@ -43,11 +42,7 @@ public class Share2Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share2);
@@ -193,10 +188,6 @@ public class Share2Activity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
 
 

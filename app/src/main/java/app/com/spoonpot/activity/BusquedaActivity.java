@@ -80,8 +80,7 @@ import app.com.spoonpot.holder.Notificacion;
 import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
 import app.com.spoonpot.holder.User_mas;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 import static app.com.spoonpot.config.Constants.compareDate;
 
@@ -134,11 +133,7 @@ public class BusquedaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
@@ -329,6 +324,12 @@ public class BusquedaActivity extends AppCompatActivity {
             gps.showSettingsAlert();
         }
 
+
+        if(app.getBuscador().equals("0"))
+        {
+            Constants.explicativo(BusquedaActivity.this,getString(R.string.buscador));
+            app.setBuscador(1);
+        }
 
 
     }
@@ -1397,10 +1398,6 @@ public class BusquedaActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
 
 }

@@ -2,8 +2,10 @@ package app.com.spoonpot.config;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -16,6 +18,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -25,8 +28,25 @@ import android.util.Base64;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -421,6 +441,57 @@ public class Constants {
 
         return temp[2]+"-"+temp[1]+"-"+temp[0].substring(2);
     }
+
+    public static boolean isHasJson(JSONObject object,String test) {
+        try {
+            String temp=object.getString(test);
+        } catch (JSONException ex) {
+
+            return false;
+        }
+        return true;
+    }
+
+
+    public static void explicativo(Context context,String msg)
+    {
+        Activity activity = (Activity) context;
+        final Dialog settingsDialog = new Dialog(context,R.style.AlertDialogExplicativo);
+        //settingsDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        View v=activity.getLayoutInflater().inflate(R.layout.item_explicar
+                , null);
+
+        ImageView btnclose=(ImageView) v.findViewById(R.id.imgclose);
+        btnclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingsDialog.dismiss();
+            }
+        });
+
+        final TextView txtMsg=(TextView) v.findViewById(R.id.txtMsg);
+
+        txtMsg.setText(msg);
+
+
+        settingsDialog.setContentView(v);
+        settingsDialog.show();
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(settingsDialog.getWindow().getAttributes());
+        lp.x = 20;
+        lp.y = 20;
+
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        settingsDialog.show();
+        settingsDialog.getWindow().setAttributes(lp);
+    }
+
+
+
 
 
 

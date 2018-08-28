@@ -64,8 +64,7 @@ import app.com.spoonpot.holder.Like;
 import app.com.spoonpot.holder.Notificacion;
 import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 import static app.com.spoonpot.config.Constants.compareDate;
 
@@ -115,11 +114,7 @@ public class Tab3 extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle state) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
 
         super.onActivityCreated(state);
 
@@ -994,9 +989,7 @@ public class Tab3 extends Fragment {
         }
     }
 
-    protected void attachBaseContext(Context newBase) {
-        super.onAttach(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 
 }

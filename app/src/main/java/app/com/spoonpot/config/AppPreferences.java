@@ -24,6 +24,15 @@ public class AppPreferences {
     public static final String mensajes = "app.com.spoonpot.mensajes";
 
 
+    //explicativo
+    public static final String inicio = "app.com.spoonpot.inicio";
+    public static final String favorito = "app.com.spoonpot.favorito";
+    public static final String plato = "app.com.spoonpot.plato";
+    public static final String mensaje = "app.com.spoonpot.mensaje";
+    public static final String perfil = "app.com.spoonpot.perfil";
+    public static final String buscador = "app.com.spoonpot.buscador";
+
+
     public  String getFirebasetoken() {
         return appPreferences.getString(firebasetoken, "");
     }
@@ -152,6 +161,84 @@ public class AppPreferences {
         editor.putString(mensajes,String.valueOf(value));
         editor.commit();
     }
+
+    //explicativo
+
+    public  void setInicio(int value)
+    {
+        editor = appPreferences.edit();
+        editor.putString(inicio,String.valueOf(value));
+        editor.commit();
+    }
+
+    public String getInicio()
+    {
+        return  appPreferences.getString(inicio,"0");
+    }
+
+    public  void setFavorito(int value)
+    {
+        editor = appPreferences.edit();
+        editor.putString(favorito,String.valueOf(value));
+        editor.commit();
+    }
+
+    public String getFavorito()
+    {
+        return  appPreferences.getString(favorito,"0");
+    }
+
+
+    public  void setPlato(int value)
+    {
+        editor = appPreferences.edit();
+        editor.putString(plato,String.valueOf(value));
+        editor.commit();
+    }
+
+    public String getPlato()
+    {
+        return  appPreferences.getString(plato,"0");
+    }
+
+
+    public  void setMensaje(int value)
+    {
+        editor = appPreferences.edit();
+        editor.putString(mensaje,String.valueOf(value));
+        editor.commit();
+    }
+
+    public String getMensaje()
+    {
+        return  appPreferences.getString(mensaje,"0");
+    }
+
+
+    public  void setPerfil(int value)
+    {
+        editor = appPreferences.edit();
+        editor.putString(perfil,String.valueOf(value));
+        editor.commit();
+    }
+
+    public String getPerfil()
+    {
+        return  appPreferences.getString(perfil,"0");
+    }
+
+    public  void setBuscador(int value)
+    {
+        editor = appPreferences.edit();
+        editor.putString(buscador,String.valueOf(value));
+        editor.commit();
+    }
+
+    public String getBuscador()
+    {
+        return  appPreferences.getString(buscador,"0");
+    }
+
 
 
 }

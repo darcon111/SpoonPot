@@ -19,7 +19,7 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:windowSoftInputMode="stateVisible|adjustResize">
+        android:windowSoftInputMode="adjustPan">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -31,7 +31,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDLoY02wbi_0_DQEbS5M6bL-DABNipW4F0 " />
+            android:value="AIzaSyDLoY02wbi_0_DQEbS5M6bL-DABNipW4F0" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -104,6 +104,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".activity.FavoritoActivity"
@@ -130,7 +133,11 @@
         <activity
             android:name=".activity.MapsActivity2"
             android:label="@string/title_activity_maps2" />
-        <activity android:name=".activity.DescripcionActivity"></activity>
+        <activity android:name=".activity.DescripcionActivity" />
+        <activity android:name=".activity.testActivity">
+
+
+        </activity>
     </application>
 
 </manifest>

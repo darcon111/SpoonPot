@@ -311,7 +311,7 @@
                         android:layout_weight="0.05"
                         android:padding="5dp"
                         android:visibility="gone"
-                        app:srcCompat="@drawable/ic_close" />
+                        app:srcCompat="@drawable/closemdpi" />
 
                 </LinearLayout>
 

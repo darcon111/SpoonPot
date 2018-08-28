@@ -41,8 +41,7 @@ import app.com.spoonpot.holder.ChatMessage;
 import app.com.spoonpot.holder.Friend;
 import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 import static app.com.spoonpot.helpers.DataBase.TABLE_MSG;
 
@@ -77,11 +76,7 @@ public class Mensaje extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle state) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         super.onActivityCreated(state);
 
 

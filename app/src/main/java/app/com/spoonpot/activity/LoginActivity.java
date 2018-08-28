@@ -41,6 +41,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -66,6 +68,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -78,9 +83,9 @@ import app.com.spoonpot.config.AppPreferences;
 import app.com.spoonpot.config.Constants;
 import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.fabric.sdk.android.Fabric;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -88,8 +93,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private AlertDialog.Builder message;
-    private ProgressDialog progressDialog=null;
+
+
     /* *************************************
      *              GENERAL                *
      ***************************************/
@@ -116,13 +121,15 @@ public class LoginActivity extends AppCompatActivity {
     private ValueEventListener  listen;
     private ConstraintLayout main;
 
+    //data facebook
+    private String appname="",applastname="";
+    private String appbirthday="",appgenero="1";
+
+    private SweetAlertDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         FacebookSdk.sdkInitialize(getApplicationContext());
         Fabric.with(this, new Crashlytics());
@@ -189,13 +196,46 @@ public class LoginActivity extends AppCompatActivity {
 
         mCallbackManager = CallbackManager.Factory.create();
         final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email", "public_profile");
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        loginButton.setReadPermissions("email", "public_profile","user_friends","user_birthday");
+        /*loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
+
+                // App code
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.v("LoginActivity", response.toString());
+
+                                // Application code
+                                try {
+                                    String email = object.getString("email");
+                                    String birthday = object.getString("birthday");// 01/31/1980 format
+                                    String name = object.getString("name");
+
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+
                 handleFacebookAccessToken(loginResult.getAccessToken());
+
+
             }
+
+
 
             @Override
             public void onCancel() {
@@ -208,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "facebook:onError", error);
                 // ...
             }
-        });
+        });*/
 
         btn_faceboook = (Button) findViewById(R.id.btn_facebook);
         btn_faceboook.setOnClickListener(new View.OnClickListener() {
@@ -219,9 +259,66 @@ public class LoginActivity extends AppCompatActivity {
                 loginButton.invalidate();
                 loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
-                    public void onSuccess(LoginResult loginResult) {
+                    public void onSuccess(final LoginResult loginResult) {
                         Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                        handleFacebookAccessToken(loginResult.getAccessToken());
+
+                        // App code
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject object, GraphResponse response) {
+                                        Log.v("LoginActivity", response.toString());
+
+                                        // Application code
+                                        try {
+
+
+
+                                            if(Constants.isHasJson(object,"gender"))
+                                            {
+                                                if(object.getString("gender").equals("male"))
+                                                {
+                                                    appgenero="1";
+                                                }else
+                                                {
+                                                    appgenero="2";
+                                                }
+                                            }
+
+                                            if(Constants.isHasJson(object,"birthday"))
+                                            {
+                                                appbirthday = object.getString("birthday"); // 01/31/1980 format
+                                            }
+
+                                            if(Constants.isHasJson(object,"name"))
+                                            {
+                                                String[] name = object.getString("name").split(" ");
+
+                                                appname= name[0];
+                                                applastname= name[1];
+                                            }
+
+
+
+
+
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        handleFacebookAccessToken(loginResult.getAccessToken());
+
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,email,gender,birthday");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+
+
+
                     }
 
                     @Override
@@ -253,24 +350,20 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-           /* App permissions */
-        if (checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            if (checkPlayServices()) {
-            }
+
+        /* App permissions */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getApplicationContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    && getApplicationContext().checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && getApplicationContext().checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(LoginActivity.this,
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.ACCESS_FINE_LOCATION,android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                        PERMISSION_REQUEST_CODE);
+
+
 
         }
-        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            if (checkPlayServices()) {
 
-            }
-
-        }
-        if (checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            if (checkPlayServices()) {
-
-            }
-
-        }
 
         /*databaseUsers.addValueEventListener(new ValueEventListener() {
             @Override
@@ -373,38 +466,43 @@ public class LoginActivity extends AppCompatActivity {
                             // signed in user can be handled in the listener.
                             if(task.getException() instanceof FirebaseAuthInvalidCredentialsException)
                             {
-                                progressDialog.dismiss();
-                                message = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.error_login_pass))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                clear();
+                                pDialog.dismiss();
 
-                                            }
-                                        });
 
-                                message.show();
+                                pDialog= new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.error_login_pass));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                        clear();
+                                    }
+                                });
+                                pDialog.show();
+
                                 return;
+
+
                             }
 
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                progressDialog.dismiss();
-                                message = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.error_user))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                clear();
+                                pDialog.dismiss();
 
-                                            }
-                                        });
+                                pDialog= new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.error_user));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                        clear();
+                                    }
+                                });
+                                pDialog.show();
 
-                                message.show();
                                 return;
                             }
 
@@ -412,7 +510,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             if (!task.isSuccessful()) {
-                                progressDialog.dismiss();
+                                pDialog.dismiss();
 
                                 /*mAuth.fetchProvidersForEmail(txtemail.getText().toString()).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
                                     @Override
@@ -443,7 +541,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                             } else {
-                                progressDialog.dismiss();
+                                pDialog.dismiss();
 
 
                                 insertUser("");
@@ -467,21 +565,23 @@ public class LoginActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 // there was an error
                                 Log.d(TAG, "error Login :" + task.getException().toString());
-                                progressDialog.dismiss();
-                                message = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.error_user))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                LoginManager.getInstance().logOut();
-                                                FirebaseAuth.getInstance().signOut();
+                                pDialog.dismiss();
 
-                                            }
-                                        });
 
-                                message.show();
+                                pDialog= new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.error_user));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                        LoginManager.getInstance().logOut();
+                                        FirebaseAuth.getInstance().signOut();
+                                    }
+                                });
+                                pDialog.show();
+
 
                             } else {
                                 insertUser("");
@@ -514,37 +614,10 @@ public class LoginActivity extends AppCompatActivity {
                 if(mListUser.get(i).getFirebaseId().equals(user.getUid()))
                 {
                     Utemp=mListUser.get(i);
+                    i= mListUser.size();
                 }
             }
         }
-
-
-       /* Query userquery = databaseUsers
-                .orderByChild("firebaseId").equalTo(user.getUid());
-
-        userquery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //getting artist
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    //getting artist
-                    Utemp = postSnapshot.getValue(User.class);
-                }
-
-
-
-
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException());
-            }
-        });*/
-
 
 
 
@@ -580,11 +653,10 @@ public class LoginActivity extends AppCompatActivity {
                     imagen="";
                 }
                 data.setUrl_imagen(imagen);
-                data.setName("");
-                data.setLastname("");
-                data.setDate_created("");
-                data.setFecha_nac("");
-                data.setGenero("");
+                data.setName(appname);
+                data.setLastname(applastname);
+                data.setFecha_nac(appbirthday);
+                data.setGenero(appgenero);
                 data.setType("1");
                 data.setLat("0");
                 data.setLog("0");
@@ -654,10 +726,17 @@ public class LoginActivity extends AppCompatActivity {
             txtpass.setError(getString(R.string.error_pass));
             return ;
         }
-        progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.show();
-        progressDialog.setContentView(R.layout.progressdialog);
-        progressDialog.setCancelable(false);
+
+
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor(getString(R.string.colorAccent)));
+        pDialog.setTitleText(getResources().getString(R.string.auth));
+        pDialog.setCancelable(true);
+        pDialog.show();
+
+
+
+
 
         mAuth.createUserWithEmailAndPassword(txtemail.getText().toString(), txtpass.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -675,23 +754,26 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            progressDialog.dismiss();
+                            pDialog.dismiss();
                             /* correo verificacion */
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if(user.isEmailVerified()==false) {
                                 user.sendEmailVerification();
-                                message = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.user_create))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                clear();
-                                            }
-                                        });
 
-                                message.show();
+
+                                pDialog= new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.user_create));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                        clear();
+                                    }
+                                });
+                                pDialog.show();
+
                             }else {
                                 insertUser("");
                                 databaseUsers.removeEventListener(listen);
@@ -707,43 +789,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
-                        .show();
-            } else {
-                Log.i(TAG, "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-    private boolean checkPermission(String parametros) {
-        int valor = ContextCompat.checkSelfPermission(LoginActivity.this, parametros);
-        if (valor != PackageManager.PERMISSION_GRANTED) {
-            requestPermission(parametros);
-            return false;
-        } else {
-            return true;
-        }
-    }
 
-    private boolean requestPermission(String parametro) {
-        //parametro es el permiso a solicitar
-        if (ActivityCompat.shouldShowRequestPermissionRationale(LoginActivity.this, parametro)) {
-            Log.e(TAG, "Permission Granted, Now you can access location data.");
-            ActivityCompat.requestPermissions(LoginActivity.this, new String[]{parametro}, PERMISSION_REQUEST_CODE);
-            return false;
-        } else {
 
-            ActivityCompat.requestPermissions(LoginActivity.this, new String[]{parametro}, PERMISSION_REQUEST_CODE);
-            return false;
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -758,24 +805,23 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Log.e(TAG, "Permission Denied, You cannot access location data.");
 
-                    if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-                        message = new AlertDialog.Builder(LoginActivity.this,R.style.AppCompatAlertDialogStyle);
-                    }
-                    else {
-                        message = new AlertDialog.Builder(LoginActivity.this);
-                    }
-                    message
-                            .setTitle(R.string.error)
-                            .setMessage(getText(R.string.permissions))
-                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    finish();
 
-                                }
-                            });
+                    pDialog= new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE);
+                    pDialog.setTitleText(getResources().getString(R.string.app_name));
+                    pDialog.setContentText(getString(R.string.permissions));
+                    pDialog.setConfirmText(getResources().getString(R.string.ok));
+                    pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                            finish();
+                        }
+                    });
+                    pDialog.show();
 
-                    message.show();
+
+
+
 
                 }
                 break;
@@ -814,18 +860,20 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if(user.isEmailVerified()==false) {
                                 user.sendEmailVerification();
-                                message = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.user_create))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                LoginManager.getInstance().logOut();
-                                            }
-                                        });
 
-                                message.show();
+                                pDialog= new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.permissions));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                        LoginManager.getInstance().logOut();
+                                    }
+                                });
+                                pDialog.show();
+
                             }else {
                                 String imagen ="https://graph.facebook.com/"+token.getUserId()+"/picture?type=large";
                                 insertUser(imagen);
@@ -867,10 +915,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginTwitter(final String token, final String secret)
     {
-        progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.show();
-        progressDialog.setContentView(R.layout.progressdialog);
-        progressDialog.setCancelable(false);
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor(getString(R.string.colorAccent)));
+        pDialog.setTitleText(getResources().getString(R.string.auth));
+        pDialog.setCancelable(true);
+        pDialog.show();
 
         AuthCredential credential = TwitterAuthProvider.getCredential(token, secret);
         mAuth.signInWithCredential(credential)
@@ -885,22 +934,24 @@ public class LoginActivity extends AppCompatActivity {
 
                         }else
                         {
-                            progressDialog.dismiss();
+                            pDialog.dismiss();
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if(user.isEmailVerified()==false) {
                                 user.sendEmailVerification();
-                                message = new AlertDialog.Builder(LoginActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.user_create))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
 
-                                            }
-                                        });
+                                pDialog= new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.permissions));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
 
-                                message.show();
+                                    }
+                                });
+                                pDialog.show();
+
                             }else {
                                 databaseUsers.removeEventListener(listen);
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -989,10 +1040,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 
 }

@@ -30,8 +30,7 @@ import app.com.spoonpot.R;
 import app.com.spoonpot.config.AppPreferences;
 import app.com.spoonpot.config.Constants;
 import app.com.spoonpot.holder.User;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 import static app.com.spoonpot.config.Constants.setLanguage;
 
@@ -46,11 +45,7 @@ public class ConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
@@ -129,10 +124,7 @@ public class ConfigActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
     /* dialog language*/
     public void languageDialog(View v) {

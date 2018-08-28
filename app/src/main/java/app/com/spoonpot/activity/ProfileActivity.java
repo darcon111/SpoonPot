@@ -48,7 +48,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.text.Line;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -87,8 +86,7 @@ import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
 import app.com.spoonpot.holder.Valoraciones;
 import q.rorbin.badgeview.QBadgeView;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 import static app.com.spoonpot.config.Constants.compareDate;
 
@@ -168,11 +166,7 @@ public class ProfileActivity extends AppCompatActivity {
     private int idlike = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
@@ -372,6 +366,12 @@ public class ProfileActivity extends AppCompatActivity {
         }
         badgeView = new QBadgeView(this);
         NotiTask();
+
+        if(app.getPerfil().equals("0"))
+        {
+            Constants.explicativo(ProfileActivity.this,getString(R.string.experfil));
+            app.setPerfil(1);
+        }
 
     }
 
@@ -1882,9 +1882,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 }

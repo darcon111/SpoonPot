@@ -2,9 +2,9 @@ package app.com.spoonpot.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.IntentSender;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -62,6 +62,16 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -114,10 +124,10 @@ import app.com.spoonpot.holder.Like;
 import app.com.spoonpot.holder.Notificacion;
 import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 
 import static app.com.spoonpot.config.Constants.compareDate;
@@ -138,14 +148,13 @@ public class MainActivity extends AppCompatActivity {
     private String imagen, name=null;
     private static FirebaseDatabase mDatabase;
 
-    private AlertDialog.Builder message;
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private DatabaseReference databasePlatos;
     private PlatoRecycleAdapter mPlatoAdapter;
     private FirebaseAuth auth;
 
-    //private BottomNavigationView bottomNavigationView;
+
     private BottomNavigationViewEx bottomNavigationView;
 
     private FirebaseUser user;
@@ -167,18 +176,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     private QBadgeView badgeView;
+    private SweetAlertDialog pDialog;
+
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* set orientation*/
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
-        FacebookSdk.sdkInitialize(getApplicationContext());
+
+
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         app = new AppPreferences(getApplicationContext());
@@ -197,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
         gps = new GPS(MainActivity.this);
         if (!gps.canGetLocation()) {
-            gps.showSettingsAlert();
+            gps.settingsrequest();
         }
                    /* toolbar*/
         toolbar = (Toolbar) findViewById(R.id.toolbaruser);
@@ -321,19 +329,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (user.isEmailVerified() == false) {
-            message = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog);
-            message
-                    .setTitle(R.string.error)
-                    .setMessage(getText(R.string.error_email))
-                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            signOut();
-                            finish();
-                        }
-                    });
 
-            message.show();
+            pDialog= new SweetAlertDialog(MainActivity.this, SweetAlertDialog.ERROR_TYPE);
+            pDialog.setTitleText(getResources().getString(R.string.app_name));
+            pDialog.setContentText(getString(R.string.error_email));
+            pDialog.setConfirmText(getResources().getString(R.string.ok));
+            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    sDialog.dismissWithAnimation();
+                    signOut();
+                    finish();
+
+                }
+            });
+            pDialog.show();
+
         }
 
 
@@ -344,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
 
-  /* button navigation*/
+        /* button navigation*/
         bottomNavigationView = (BottomNavigationViewEx) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setItemHeight(125);
         bottomNavigationView.enableAnimation(false);
@@ -392,21 +403,33 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_add:
                                 if (Utemp.getName() != null) {
                                     if (Utemp.getName().equals("")) {
-                                        new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog)
-                                                .setIcon(R.mipmap.ic_launcher)
-                                                .setTitle(getString(R.string.app_name))
-                                                .setMessage(getString(R.string.profile))
-                                                .setCancelable(false)
-                                                .setNegativeButton(getString(R.string.no), null)//WITHOUT listener
-                                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {//un listener que al pulsar, cierre la aplicacion
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        intent[0] = new Intent(MainActivity.this, RegisterActivity.class);
-                                                        intent[0].putExtra("id", Utemp.getId());
-                                                        startActivity(intent[0]);
-                                                    }
-                                                })
-                                                .show();
+
+
+                                        pDialog= new SweetAlertDialog(MainActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                                        pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                        pDialog.setContentText(getString(R.string.profile));
+                                        pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sDialog) {
+                                                sDialog.dismissWithAnimation();
+                                                intent[0] = new Intent(MainActivity.this, RegisterActivity.class);
+                                                intent[0].putExtra("id", Utemp.getId());
+                                                startActivity(intent[0]);
+                                            }
+                                        });
+                                        pDialog.setCancelText(getString(R.string.no));
+                                        pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismiss();
+                                            }
+                                        });
+                                        pDialog.show();
+
+
+
+
 
                                     } else {
                                         intent[0] = new Intent(MainActivity.this, AddPlatoActivity.class);
@@ -509,6 +532,15 @@ public class MainActivity extends AppCompatActivity {
         badgeView = new QBadgeView(this);
 
         NotiTask();
+
+
+        if(app.getInicio().equals("0"))
+        {
+            Constants.explicativo(MainActivity.this,getString(R.string.inicio));
+            app.setInicio(1);
+       }
+
+
     }
 
 
@@ -782,45 +814,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    if (permissions.length > 0) {
-                        Log.e(TAG, "Permission Granted, Now you can access location data." + permissions[0]);
-                    }
-                    restartActivity(this);
-
-                } else {
-                    if (permissions.length > 0) {
-                        Log.e(TAG, "Permission Denied, You cannot access location data." + permissions[0]);
-                    }
-                    /*if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-                        message = new AlertDialog.Builder(MainActivity.this,R.style.AppCompatAlertDialogStyle);
-                    }
-                    else {
-                        message = new AlertDialog.Builder(MainActivity.this);
-                    }*/
-                    message = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog);
-                    message
-                            .setTitle(R.string.error)
-                            .setMessage(getText(R.string.permissions))
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-                                    finish();
-
-                                }
-                            });
-
-                    message.show();
-
-                }
-                break;
-        }
-    }
 
     //restart Activity
     public static void restartActivity(Activity activity) {
@@ -1213,20 +1206,31 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case 8:
-                        new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog)
-                                .setIcon(R.mipmap.ic_launcher)
-                                .setTitle(getString(R.string.app_name))
-                                .setMessage(getString(R.string.exit))
-                                .setCancelable(false)
-                                .setNegativeButton(getString(R.string.no), null)//WITHOUT listener
-                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {//un listener que al pulsar, cierre la aplicacion
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        signOut();
-                                        finish();
-                                    }
-                                })
-                                .show();
+
+
+                        pDialog= new SweetAlertDialog(MainActivity.this, SweetAlertDialog.NORMAL_TYPE);
+                        pDialog.setTitleText(getResources().getString(R.string.app_name));
+                        pDialog.setContentText(getString(R.string.exit));
+                        pDialog.setConfirmText(getResources().getString(R.string.ok));
+                        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                                signOut();
+                                finish();
+
+                            }
+                        });
+                        pDialog.setCancelText(getString(R.string.no));
+                        pDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                            }
+                        });
+                        pDialog.show();
+
+
                         break;
 
 
@@ -1311,10 +1315,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
 
     private void hideViews() {
@@ -1329,6 +1329,26 @@ public class MainActivity extends AppCompatActivity {
         toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
 
         //mFabButton.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+    }
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+// Check for the integer request code originally supplied to startResolutionForResult().
+            case REQUEST_CHECK_SETTINGS:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        gps.settingsrequest();//keep asking if imp or do whatever
+                        break;
+                }
+                break;
+        }
     }
 
 }

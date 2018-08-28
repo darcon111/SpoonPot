@@ -1,6 +1,6 @@
 package app.com.spoonpot.activity;
 
-import android.app.AlertDialog;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,15 +41,14 @@ import app.com.spoonpot.R;
 import app.com.spoonpot.config.AppPreferences;
 import app.com.spoonpot.config.Constants;
 import app.com.spoonpot.holder.User;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 public class LoginEmailActivity extends AppCompatActivity {
     private EditText txtemail,txtpass,txtrepass;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog=null;
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private AlertDialog.Builder message;
 
     private ArrayList<User> mListUser;
     private ValueEventListener listen;
@@ -60,14 +59,11 @@ public class LoginEmailActivity extends AppCompatActivity {
     private String imagen,name;
     private AppPreferences app;
     private Switch onswitch;
+    private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
 
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
@@ -145,37 +141,41 @@ public class LoginEmailActivity extends AppCompatActivity {
                             if(task.getException() instanceof FirebaseAuthInvalidCredentialsException)
                             {
                                 progressDialog.dismiss();
-                                message = new AlertDialog.Builder(LoginEmailActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.error_login_pass))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                clear();
 
-                                            }
-                                        });
 
-                                message.show();
+                                pDialog= new SweetAlertDialog(LoginEmailActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.error_login_pass));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                        clear();
+                                    }
+                                });
+                                pDialog.show();
+
+
                                 return;
                             }
 
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 progressDialog.dismiss();
-                                message = new AlertDialog.Builder(LoginEmailActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.error_user))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                clear();
 
-                                            }
-                                        });
+                                pDialog= new SweetAlertDialog(LoginEmailActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.error_user));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
+                                        clear();
+                                    }
+                                });
+                                pDialog.show();
 
-                                message.show();
                                 return;
                             }
 
@@ -236,20 +236,22 @@ public class LoginEmailActivity extends AppCompatActivity {
                                 // there was an error
                                 Log.d(TAG, "error Login :" + task.getException().toString());
                                 progressDialog.dismiss();
-                                message = new AlertDialog.Builder(LoginEmailActivity.this, R.style.AlertDialog);
-                                message
-                                        .setTitle(R.string.app_name)
-                                        .setMessage(getText(R.string.error_user))
-                                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                LoginManager.getInstance().logOut();
-                                                FirebaseAuth.getInstance().signOut();
 
-                                            }
-                                        });
+                                pDialog= new SweetAlertDialog(LoginEmailActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                pDialog.setContentText(getString(R.string.error_user));
+                                pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.dismissWithAnimation();
 
-                                message.show();
+                                        LoginManager.getInstance().logOut();
+                                        FirebaseAuth.getInstance().signOut();
+                                    }
+                                });
+                                pDialog.show();
+
 
                             } else {
                                 insertUser();
@@ -309,18 +311,22 @@ public class LoginEmailActivity extends AppCompatActivity {
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                 if (user.isEmailVerified() == false) {
                                     user.sendEmailVerification();
-                                    message = new AlertDialog.Builder(LoginEmailActivity.this, R.style.AlertDialog);
-                                    message
-                                            .setTitle(R.string.app_name)
-                                            .setMessage(getText(R.string.user_create))
-                                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int id) {
-                                                    clear();
-                                                }
-                                            });
 
-                                    message.show();
+
+                                    pDialog= new SweetAlertDialog(LoginEmailActivity.this, SweetAlertDialog.ERROR_TYPE);
+                                    pDialog.setTitleText(getResources().getString(R.string.app_name));
+                                    pDialog.setContentText(getString(R.string.user_create));
+                                    pDialog.setConfirmText(getResources().getString(R.string.ok));
+                                    pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+
+                                           clear();
+                                        }
+                                    });
+                                    pDialog.show();
+
                                 } else {
                                     insertUser();
                                     databaseUsers.removeEventListener(listen);
@@ -335,18 +341,24 @@ public class LoginEmailActivity extends AppCompatActivity {
                     });
         }else
         {
-            message = new AlertDialog.Builder(LoginEmailActivity.this, R.style.AlertDialog);
-            message
-                    .setTitle(R.string.app_name)
-                    .setMessage(getText(R.string.acepte_terminos))
-                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            
-                        }
-                    });
 
-            message.show();
+
+
+            pDialog= new SweetAlertDialog(LoginEmailActivity.this, SweetAlertDialog.WARNING_TYPE);
+            pDialog.setTitleText(getResources().getString(R.string.app_name));
+            pDialog.setContentText(getString(R.string.acepte_terminos));
+            pDialog.setConfirmText(getResources().getString(R.string.ok));
+            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    sDialog.dismissWithAnimation();
+
+                    clear();
+                }
+            });
+            pDialog.show();
+
+
         }
     }
 
@@ -488,10 +500,7 @@ public class LoginEmailActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
     public void terminos(View v)
     {

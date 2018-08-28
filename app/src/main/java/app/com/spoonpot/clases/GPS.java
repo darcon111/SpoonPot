@@ -10,6 +10,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,9 +21,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,9 +46,9 @@ import java.util.Locale;
 import app.com.spoonpot.R;
 
 
-public class GPS extends Service implements LocationListener {
+public class GPS extends Service implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    private final Context mContext;
+    private static Context mContext;
 
     // flag for GPS status
     boolean isGPSEnabled = false;
@@ -57,12 +72,24 @@ public class GPS extends Service implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
     private static final int PERMISSION_REQUEST_CODE = 1;
-    private AlertDialog.Builder mensaje;
+    //private AlertDialog.Builder mensaje;
+
+    private static GoogleApiClient googleApiClient=null;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 
 
     public GPS(Context context) {
         this.mContext = context;
+
+        googleApiClient = new GoogleApiClient.Builder(context)
+        .addApi(LocationServices.API)
+        .addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this)
+        .build();
+       googleApiClient.connect();
+
+
         getLocation();
     }
 
@@ -208,7 +235,7 @@ public class GPS extends Service implements LocationListener {
     }
 
 
-
+/*
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
@@ -245,6 +272,8 @@ public class GPS extends Service implements LocationListener {
                 break;
         }
     }
+
+*/
 
     /**
      * Function to get latitude
@@ -284,35 +313,6 @@ public class GPS extends Service implements LocationListener {
      * */
     public void showSettingsAlert(){
 
-        /*if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-            mensaje = new AlertDialog.Builder(mContext,R.style.dialog_light);
-        }
-        else {
-            mensaje = new AlertDialog.Builder(mContext,R.style.dialog_light);
-        }
-        mensaje
-                .setTitle("GPS")
-                .setMessage("GPS no esta Habilitado")
-                .setPositiveButton("Configurar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        mContext.startActivity(intent);
-                        //mensaje.dismiss();
-
-                    }
-                })
-                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //mensaje.dismiss();
-
-                    }
-
-
-                });
-
-        mensaje.show();*/
 
 
         new AlertDialog.Builder(mContext, R.style.AlertDialog)
@@ -353,5 +353,67 @@ public class GPS extends Service implements LocationListener {
     public IBinder onBind(Intent arg0) {
         return null;
     }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    public static void settingsrequest()
+    {
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(30 * 1000);
+        locationRequest.setFastestInterval(5 * 1000);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true); //this is the key ingredient
+
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                final LocationSettingsStates state = result.getLocationSettingsStates();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All location settings are satisfied. The client can initialize location
+                        // requests here.
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        // Location settings are not satisfied. But could be fixed by showing the user
+                        // a dialog.
+
+                        try {
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+
+                            status.startResolutionForResult((Activity) mContext, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way to fix the
+                        // settings so we won't show the dialog.
+                        break;
+                }
+            }
+        });
+    }
+
 
 }

@@ -273,4 +273,18 @@ de meterte en la cocina?</string>
     <string name="deseo">Desea probar este plato</string>
     <string name="sugerir_enviada">Sugerencia enviada</string>
     <string name="acepte_terminos">Por favor acepte los términos y condiciones</string>
+
+
+    <string name="inicio">Esta es la sección de inicio, aquí encontraras las recetas de los cocineros más cercanos.</string>
+    <string name="favorito">Esta es la sección de favoritos, aquí encontraras a las personas que decidas seguir y tus recetas favoritas</string>
+    <string name="plato">Esta es la sección para añadir una receta y que tus seguidores puedan verla. ¿Preparado para compartir?</string>
+    <string name="mensaje">En esta sección puedes gestionar todos tus mensajes y notificaciones.</string>
+    <string name="experfil">Desde aquí podrás ver tus recetas, valoraciones, seguidores y mucho más.</string>
+    <string name="buscador">Busca a tus amigos y recetas o utiliza los filtros para encontrar a los mas populares.</string>
+
+
+
+    <string name="colorAccent">#757575</string>
+
+
 </resources>

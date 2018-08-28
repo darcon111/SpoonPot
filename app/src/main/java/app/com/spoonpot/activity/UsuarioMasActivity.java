@@ -45,8 +45,7 @@ import app.com.spoonpot.holder.Like;
 import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
 import app.com.spoonpot.holder.User_mas;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class UsuarioMasActivity extends AppCompatActivity {
 
@@ -64,11 +63,7 @@ public class UsuarioMasActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
 
         super.onCreate(savedInstanceState);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -319,10 +314,7 @@ public class UsuarioMasActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 
 
 }

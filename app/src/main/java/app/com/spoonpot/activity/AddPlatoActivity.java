@@ -112,9 +112,9 @@ import app.com.spoonpot.holder.Friend;
 import app.com.spoonpot.holder.Notificacion;
 import app.com.spoonpot.holder.Plato;
 import app.com.spoonpot.holder.User;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import q.rorbin.badgeview.QBadgeView;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class AddPlatoActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener,IPickResult {
@@ -125,7 +125,6 @@ public class AddPlatoActivity extends AppCompatActivity implements
     private static final int PICK_FROM_FILE = 3;
     private File outPutFile = null;
     private Bitmap bitmap;
-    private AlertDialog.Builder mensaje;
     private ImageView img1;
     private String image = "";
     private float initialX;
@@ -164,13 +163,12 @@ public class AddPlatoActivity extends AppCompatActivity implements
     private View iconView;
     QBadgeView badgeView;
 
+    private SweetAlertDialog pDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_plato);
@@ -548,6 +546,14 @@ public class AddPlatoActivity extends AppCompatActivity implements
 
         badgeView = new QBadgeView(this);
         NotiTask();
+
+
+
+        if(app.getPlato().equals("0"))
+        {
+            Constants.explicativo(AddPlatoActivity.this,getString(R.string.plato));
+            app.setPlato(1);
+        }
 
     }
 
@@ -942,18 +948,20 @@ public class AddPlatoActivity extends AppCompatActivity implements
 
         databaseUsers.child(app.getUserId()).child("type").setValue("2");
 
-        mensaje = new AlertDialog.Builder(AddPlatoActivity.this, R.style.AlertDialog);
-        mensaje
-                .setTitle(R.string.app_name)
-                .setMessage(getText(R.string.addplato))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
 
-                    }
-                });
-        mensaje.show();
+        pDialog= new SweetAlertDialog(AddPlatoActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+        pDialog.setTitleText(getResources().getString(R.string.app_name));
+        pDialog.setContentText(getString(R.string.addplato));
+        pDialog.setConfirmText(getResources().getString(R.string.ok));
+        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sDialog) {
+                sDialog.dismissWithAnimation();
+                finish();
+            }
+        });
+        pDialog.show();
+
     }
 
     public void favorito(View v)
@@ -978,18 +986,23 @@ public class AddPlatoActivity extends AppCompatActivity implements
 
 
         }
-        mensaje = new AlertDialog.Builder(AddPlatoActivity.this, R.style.AlertDialog);
-        mensaje
-                .setTitle(R.string.app_name)
-                .setMessage(getText(R.string.addplato))
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
 
-                    }
-                });
-        mensaje.show();
+        pDialog= new SweetAlertDialog(AddPlatoActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+        pDialog.setTitleText(getResources().getString(R.string.app_name));
+        pDialog.setContentText(getString(R.string.addplato));
+        pDialog.setConfirmText(getResources().getString(R.string.ok));
+        pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sDialog) {
+                sDialog.dismissWithAnimation();
+                finish();
+            }
+        });
+        pDialog.show();
+
+
+
+
     }
 
 
@@ -1037,11 +1050,7 @@ public class AddPlatoActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        String time = hourOfDay+"h"+minute;
-        txthora.setText(time);
-    }
+
     private void changePosition()
     {
 
@@ -1437,6 +1446,11 @@ public class AddPlatoActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+        String time = hourOfDay+"h"+minute;
+        txthora.setText(time);
+    }
 
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
@@ -1471,9 +1485,5 @@ public class AddPlatoActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
 }

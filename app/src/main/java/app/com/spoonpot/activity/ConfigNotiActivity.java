@@ -13,8 +13,7 @@ import android.widget.Switch;
 import app.com.spoonpot.R;
 import app.com.spoonpot.config.AppPreferences;
 import app.com.spoonpot.config.Constants;
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class ConfigNotiActivity extends AppCompatActivity {
 
@@ -22,11 +21,7 @@ public class ConfigNotiActivity extends AppCompatActivity {
     private Switch sound,vibrate,light;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/RobotoLight.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
+
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config_noti);
@@ -121,8 +116,5 @@ public class ConfigNotiActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+
 }
