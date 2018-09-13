@@ -138,7 +138,7 @@ public class AddPlatoActivity extends AppCompatActivity implements
     private DatabaseReference databasePlato;
     private FirebaseUser user;
     private Plato plato=new Plato();
-    private MenuItem item ;
+    //private MenuItem item ;
     private GoogleMap map;
     private MapView mapView;
     private String lat,log;
@@ -164,6 +164,7 @@ public class AddPlatoActivity extends AppCompatActivity implements
     QBadgeView badgeView;
 
     private SweetAlertDialog pDialog;
+    private ImageView imgTemp;
 
 
     @Override
@@ -289,6 +290,7 @@ public class AddPlatoActivity extends AppCompatActivity implements
         txthora2=(EditText) findViewById(R.id.txthora2);
         img1=(ImageView) findViewById(R.id.img1);
         txttipoplato=(TextView) findViewById(R.id.txttipoplato);
+        imgTemp=(ImageView) findViewById(R.id.txtImagenTemp);
 
 
 
@@ -314,40 +316,80 @@ public class AddPlatoActivity extends AppCompatActivity implements
 
                                 txttipo2.setText("Arroz");
                                 txttipoplato.setText("Arroz");
+
+                                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_arroz);
+                                image = Constants.getStringImage(bitmap);
+                                imgTemp.setImageBitmap(bitmap);
+
                             }else if(index==1)
                             {
                                 txttipo2.setText("Carne");
                                 txttipoplato.setText("Carne");
+
+                                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_carne);
+                                image = Constants.getStringImage(bitmap);
+                                imgTemp.setImageBitmap(bitmap);
+
                             }
                             else if(index==2)
                             {
                                 txttipo2.setText("Ensalada");
                                 txttipoplato.setText("Ensalada");
+
+                                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_ensalada);
+                                image = Constants.getStringImage(bitmap);
+                                imgTemp.setImageBitmap(bitmap);
+
                             }
                             else if(index==3)
                             {
                                 txttipo2.setText("Pasta");
                                 txttipoplato.setText("Pasta");
+
+                                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_pasta);
+                                image = Constants.getStringImage(bitmap);
+                                imgTemp.setImageBitmap(bitmap);
+
                             }
                             else if(index==4)
                             {
                                 txttipo2.setText("Pescado");
                                 txttipoplato.setText("Pescado");
+
+                                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_pescado);
+                                image = Constants.getStringImage(bitmap);
+                                imgTemp.setImageBitmap(bitmap);
+
                             }
                             else if(index==5)
                             {
                                 txttipo2.setText("Pizza");
                                 txttipoplato.setText("Pizza");
+
+                                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_pizza);
+                                image = Constants.getStringImage(bitmap);
+                                imgTemp.setImageBitmap(bitmap);
+
                             }
                             else if(index==6)
                             {
                                 txttipo2.setText("Sopa");
                                 txttipoplato.setText("Sopa");
+
+                                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_sopa);
+                                image = Constants.getStringImage(bitmap);
+                                imgTemp.setImageBitmap(bitmap);
+
                             }
                             else if(index==7)
                             {
                                 txttipo2.setText("Postre");
                                 txttipoplato.setText("Postre");
+
+                                bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_postre);
+                                image = Constants.getStringImage(bitmap);
+                                imgTemp.setImageBitmap(bitmap);
+
                             }
 
 
@@ -795,6 +837,10 @@ public class AddPlatoActivity extends AppCompatActivity implements
     }
 
 
+    public void continuar(View v)
+    {
+        save();
+    }
 
     public void save()
     {
@@ -890,7 +936,7 @@ public class AddPlatoActivity extends AppCompatActivity implements
         plato.setOpcional(txtopcional.getText().toString());
         plato.setRaciones(txtraciones.getText().toString());
         img1.setImageBitmap(bitmap);
-        item.setVisible(false);
+        //item.setVisible(false);
 
 
     }

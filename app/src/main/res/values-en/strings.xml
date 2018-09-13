@@ -273,4 +273,16 @@ to get you into the kitchen?</string>
     <string name="sugerir_enviada">Suggestion sent</string>
     <string name="acepte_terminos">Please accept the terms and conditions</string>
     <string name="title_activity_maps2">Map</string>
+
+
+    <string name="inicio">This is the home section, here you will find the recipes of the closest chefs.</string>
+    <string name="favorito">This is the favorites section, here you will find the people you decide to follow and your favorite recipess</string>
+    <string name="plato">This is the section to add a recipe and that your followers can see it. Ready to share?</string>
+    <string name="mensaje">In this section you can manage all your messages and notifications.</string>
+    <string name="experfil">From here you can see your recipes, ratings, followers and much more.</string>
+    <string name="buscador">Search your friends and recipes or use the filters to find the most popular.</string>
+
+    <string name="continuar">Continue</string>
+
+
 </resources>

@@ -112,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
     /* descripcion */
     private LinearLayout descri;
     private ImageView imagendescri;
-    private TextView txtcosto,txtraciones,txthora,txtdes,txtnamedes,txtalert1,txtalert2,txlike,txtnameplato,txtdistancia;
+    private TextView txtcosto,txtraciones,txthora,txtdes,txtnamedes,txtalert1,txtalert2,txlike,txtnameplato,txtdistancia,txtFecha;
     private GoogleMap map;
     private MapView mapView;
     private ImageView imgshare,imgfriend,imgchat,imglike;
@@ -226,6 +226,7 @@ public class ProfileActivity extends AppCompatActivity {
         contenedorpendientes=(LinearLayout) findViewById(R.id.contenedorpendientes);
         contenedorValoracion=(LinearLayout) findViewById(R.id.contenedorValoracion);
         contenedorPagos=(LinearLayout) findViewById(R.id.contenedorPagos);
+        txtFecha=(TextView) findViewById(R.id.txtFecha);
 
         mapView = (MapView) findViewById(R.id.mapView);
         try {
@@ -489,7 +490,13 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if(Utemp!=null)
                 {
-                    txtname.setText(Utemp.getName()+" "+Utemp.getLastname());
+
+                    if(Utemp.getName().trim().equals(""))
+                    {
+                        txtname.setText(Utemp.getEmail());
+                    }else {
+                        txtname.setText(Utemp.getName() + " " + Utemp.getLastname());
+                    }
                     txtbiografia.setText(Utemp.getBiografia());
                     if(!Utemp.getUrl_imagen().equals(""))
                     {
@@ -510,6 +517,8 @@ public class ProfileActivity extends AppCompatActivity {
                     {
                         bar.setRating(0);
                     }
+                    String[] fecha = Utemp.getDate_created().split(" ");
+                    txtFecha.setText(fecha[0]);
 
                 }
             }

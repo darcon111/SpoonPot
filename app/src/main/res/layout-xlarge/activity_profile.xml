@@ -66,23 +66,32 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="10dp"
-                    android:focusableInTouchMode="true"
-                    >
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <app.com.spoonpot.clases.ImagenCircular.CircleImageView
-                        android:id="@+id/img"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp"
-                        android:layout_margin="3dp"
-                        android:layout_weight="0.10"
-                        android:padding="3dp"
-                        app:srcCompat="@drawable/ic_user" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusableInTouchMode="true"
+                        android:padding="10dp">
+
+                        <app.com.spoonpot.clases.ImagenCircular.CircleImageView
+                            android:id="@+id/img"
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:layout_margin="3dp"
+                            android:layout_weight="0.10"
+                            android:padding="3dp"
+                            app:srcCompat="@drawable/ic_user" />
+
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="0.95"
                         android:orientation="vertical">
 
@@ -90,7 +99,7 @@
                             android:id="@+id/txtnamep"
                             style="@style/textView2"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:text="TextView" />
 
                         <RatingBar
@@ -109,8 +118,14 @@
                             android:transformPivotX="0dp"
 
                             android:transformPivotY="0dp" />
-                    </LinearLayout>
 
+                        <TextView
+                            android:id="@+id/txtFecha"
+                            style="@style/textView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="fecha" />
+                    </LinearLayout>
 
                 </LinearLayout>
 

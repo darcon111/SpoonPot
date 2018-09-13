@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
                                     if (Utemp.getName().equals("")) {
 
 
-                                        pDialog= new SweetAlertDialog(MainActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                                        pDialog= new SweetAlertDialog(MainActivity.this, SweetAlertDialog.NORMAL_TYPE);
                                         pDialog.setTitleText(getResources().getString(R.string.app_name));
                                         pDialog.setContentText(getString(R.string.profile));
                                         pDialog.setConfirmText(getResources().getString(R.string.ok));

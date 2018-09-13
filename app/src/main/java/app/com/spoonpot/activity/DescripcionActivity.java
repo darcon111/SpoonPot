@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import app.com.spoonpot.BuildConfig;
 import app.com.spoonpot.R;
 import app.com.spoonpot.clases.GPS;
 import app.com.spoonpot.clases.ImagenCircular.CircleImageView;
@@ -446,7 +448,12 @@ public class DescripcionActivity extends AppCompatActivity {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         Bitmap bitmap = Constants.decodeBase64(plato.getImage());
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes);
-        File f = new File(Environment.getExternalStorageDirectory() + File.separator + "temporary_file" + String.valueOf(System.currentTimeMillis()) + ".png");
+
+
+
+
+        File f = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsoluteFile() + File.separator + "temporary_file" + String.valueOf(System.currentTimeMillis()) + ".png");
+        Uri uri = FileProvider.getUriForFile(DescripcionActivity.this,  "app.com.spoonpot.com.vansuita.pickimage.provider",f);
         try {
             f.createNewFile();
             FileOutputStream fo = new FileOutputStream(f);
@@ -454,7 +461,8 @@ public class DescripcionActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
+        //intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
         startActivity(Intent.createChooser(intent, getString(R.string.share)));
     }
 
