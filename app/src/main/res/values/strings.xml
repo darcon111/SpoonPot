@@ -288,5 +288,7 @@ de meterte en la cocina?</string>
 
     <string name="colorAccent">#757575</string>
 
+    <string name="api_maps" translatable="false">AIzaSyDLoY02wbi_0_DQEbS5M6bL-DABNipW4F0</string>
+
 
 </resources>

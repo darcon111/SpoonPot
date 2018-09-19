@@ -94,6 +94,8 @@ dependencies {
     implementation 'com.android.support:support-core-ui:27.1.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
     implementation('com.facebook.android:audience-network-sdk:4.28.0', {
         exclude group: 'com.google.android.gms'
     })
@@ -104,7 +106,7 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:3.6.2'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.romandanylyk:pageindicatorview:0.2.0'
-    implementation 'com.nightonke:boommenu:2.1.0'
+    implementation 'com.nightonke:boommenu:2.1.1'
     implementation 'com.kyleduo.switchbutton:library:1.4.6'
     implementation 'com.github.jrvansuita:PickImage:2.2.4'
     implementation 'q.rorbin:badgeview:1.1.3'

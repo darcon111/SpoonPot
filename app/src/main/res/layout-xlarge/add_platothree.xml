@@ -8,145 +8,137 @@
     tools:layout_editor_absoluteY="25dp"
     tools:layout_editor_absoluteX="0dp">
 
+
     <TextView
-        android:id="@+id/one"
+        android:id="@+id/txtBusqueda"
+        style="@style/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorDivider"
+        android:gravity="center_vertical|center_horizontal"
+        android:lines="2"
+        android:padding="5dp"
+        android:text=""
+        android:textColor="@color/colorSecondaryText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contenedor" />
+
+    <TextView
+        android:id="@+id/textView31"
         style="@style/textView3"
-        android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_weight="1"
         android:background="@color/colorDivider"
         android:gravity="center_vertical"
         android:text="@string/drecogida"
         android:textAlignment="center"
-        android:layout_marginRight="0dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginTop="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/one">
+        android:id="@+id/contenedor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView31">
 
-        <LinearLayout
-            android:id="@+id/contenedor"
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:orientation="horizontal">
+            app:cardBackgroundColor="@color/colorDivider"
+            app:cardElevation="10dp">
 
-            <EditText
-                android:id="@+id/txtsearch"
-                style="@style/editText"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:layout_weight="0.95"
-                android:hint="@string/dire"
-                android:inputType="textFilter"
-                android:text="@string/location2" />
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="17dp" />
 
-            <ImageButton
-                android:id="@+id/search"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:layout_weight="0.05"
-                android:onClick="search"
-                app:srcCompat="@drawable/ic_action_action_search" />
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <!--<EditText
+            android:id="@+id/txtsearch"
+            style="@style/editText"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.95"
+            android:hint="@string/dire"
+            android:inputType="textFilter"
+            android:text="@string/location2" />
+
+        <ImageButton
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:onClick="search"
+            app:srcCompat="@drawable/ic_action_action_search" />-->
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtBusqueda">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginStart="8dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp" />
+            android:layout_marginTop="8dp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayout6"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_location_on" />
 
-            <EditText
-                android:id="@+id/txthora"
-                style="@style/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hrecogida" />
+    </RelativeLayout>
 
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayout7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
-
-            <EditText
-                android:id="@+id/txtdia"
-                style="@style/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/dia" />
-        </android.support.design.widget.TextInputLayout>
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout12"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:visibility="gone"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_circulosplatotwo" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <!-- <android.support.design.widget.TextInputLayout
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_marginLeft="16dp"
-         android:layout_marginRight="16dp"
-         android:layout_marginTop="16dp"
-         app:layout_constraintLeft_toLeftOf="parent"
-         app:layout_constraintRight_toRightOf="parent"
-         app:layout_constraintTop_toBottomOf="@+id/textInputLayout7"
-         android:id="@+id/textInputLayout8"
-         android:layout_marginStart="16dp"
-         android:layout_marginEnd="16dp">
-
-         <EditText
-             android:id="@+id/txtdire"
-             style="@style/editText"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:hint="@string/dire" />
-     </android.support.design.widget.TextInputLayout>-->
-
+        <Button
+            android:id="@+id/btnContinuar"
+            style="@style/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginStart="24dp"
+            android:onClick="continuar"
+            android:text="@string/continuar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

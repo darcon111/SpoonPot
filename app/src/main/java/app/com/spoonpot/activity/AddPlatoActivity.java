@@ -7,15 +7,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.os.Bundle;
@@ -36,6 +42,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,13 +59,21 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -96,6 +111,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -129,7 +146,7 @@ public class AddPlatoActivity extends AppCompatActivity implements
     private String image = "";
     private float initialX;
     private BottomNavigationViewEx bottomNavigationView;
-    private EditText txtplato,txtdes,txtcosto,txtraciones,txtofrezco,txthora,txtdia,txtopcional,txtsearch;
+    private EditText txtplato,txtdes,txtcosto,txtraciones,txtofrezco,txthora,txtdia,txtopcional;
 
     private ViewFlipper vf1,vf2;
 
@@ -159,14 +176,16 @@ public class AddPlatoActivity extends AppCompatActivity implements
     private ArrayList<Friend> mListFriend;
 
 
-    private BottomNavigationMenuView menuView;
-    private View iconView;
+    private TextView busqueda;
+
     QBadgeView badgeView;
 
     private SweetAlertDialog pDialog;
     private ImageView imgTemp;
+    private PlaceAutocompleteFragment placeAutocompleteFragment;
+    private TextView txtBusqueda;
 
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -192,6 +211,7 @@ public class AddPlatoActivity extends AppCompatActivity implements
         txthora=(EditText)findViewById(R.id.txthora);
         txtdia=(EditText)findViewById(R.id.txtdia);
         txtopcional=(EditText)findViewById(R.id.txtopcional);
+        txtBusqueda=(TextView) findViewById(R.id.txtBusqueda);
 
 
         gps = new GPS(AddPlatoActivity.this);
@@ -219,10 +239,33 @@ public class AddPlatoActivity extends AppCompatActivity implements
 
                 map=googleMap;
 
+
+                try {
+                    boolean success = map.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    AddPlatoActivity.this, R.raw.mapstyle));
+
+                    if (!success) {
+                        Log.e(TAG, "Style parsing failed.");
+                    }
+                } catch (Resources.NotFoundException e) {
+                    Log.e(TAG, "Can't find style. Error: ", e);
+                }
+
+
+                UiSettings mapUiSettings = map.getUiSettings();
+                mapUiSettings.setZoomControlsEnabled(true);
+                mapUiSettings.setAllGesturesEnabled(true);
+                mapUiSettings.setScrollGesturesEnabled(true);
+                mapUiSettings.setZoomGesturesEnabled(true);
+                mapUiSettings.setMapToolbarEnabled(false);
+
+
+
                 changePosition();
 
 
-                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                /*map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
                     @Override
                     public void onMapClick(LatLng point) {
@@ -232,8 +275,54 @@ public class AddPlatoActivity extends AppCompatActivity implements
                         map.addMarker(new MarkerOptions().position(point));
                         lat=String.valueOf(point.latitude);
                         log=String.valueOf(point.longitude);
+
+                        LatLng posicion = new LatLng(Double.parseDouble(lat), Double.parseDouble(log));
+
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(posicion)      // Sets the center of the map to Mountain View
+                                .zoom(17)                   // Sets the zoom
+                                .bearing(90)                // Sets the orientation of the camera to east
+                                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                                .build();                   // Creates a CameraPosition from the builder
+                        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
+                });*/
+
+                map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                    @Override
+                    public void onCameraIdle() {
+                        //get latlng at the center by calling
+                        LatLng mylocation = map.getCameraPosition().target;
+
+                        lat=String.valueOf(mylocation.latitude);
+                        log=String.valueOf(mylocation.longitude);
+
+
+                        Geocoder geocoder;
+                        List<Address> direccion;
+                        geocoder = new Geocoder(AddPlatoActivity.this, Locale.getDefault());
+
+                        try {
+                            direccion = geocoder.getFromLocation(mylocation.latitude, mylocation.longitude, 1);
+
+                            if(direccion.size()>=1) {
+                                txtBusqueda.setText(direccion.get(0).getAddressLine(0));
+                            }else
+                            {
+                                txtBusqueda.setText("");
+                            }
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            busqueda.setText("");
+                        }
+
+
                     }
                 });
+
+
+
 
             }
         });
@@ -300,12 +389,13 @@ public class AddPlatoActivity extends AppCompatActivity implements
         int[] ico={R.drawable.ic_arroz,R.drawable.ic_carne,R.drawable.ic_ensalada,R.drawable.ic_pasta,R.drawable.ic_pescado,R.drawable.ic_pizza,R.drawable.ic_sopa,R.drawable.ic_postre};
 
         BoomMenuButton bmb=(BoomMenuButton)findViewById(R.id.bmb);
+
         TextOutsideCircleButton.Builder builder;
         for (int i = 0; i < bmb.getPiecePlaceEnum().pieceNumber(); i++) {
              builder = new TextOutsideCircleButton.Builder()
                     .normalImageRes(ico[i])
                     .normalText(ITEMS[i])
-                    .normalTextColor(getResources().getColor(R.color.colorTheText))
+                    .normalTextColor(getResources().getColor(R.color.colorDivider))
                     .listener(new OnBMClickListener() {
                         @Override
                         public void onBoomButtonClick(int index) {
@@ -392,13 +482,14 @@ public class AddPlatoActivity extends AppCompatActivity implements
 
                             }
 
-
+                            next();
                         }
                     });
             bmb.addBuilder(builder);
         }
         bmb.setDimColor(getResources().getColor(R.color.colorPrimary));
         bmb.setNormalColor(getResources().getColor(R.color.colorPrimary));
+
 
 
 
@@ -470,117 +561,18 @@ public class AddPlatoActivity extends AppCompatActivity implements
                 });
 
 
-
-
-
-
-        txtsearch=(EditText) findViewById(R.id.txtsearch);
-
         outPutFile = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
 
         app = new AppPreferences(getApplicationContext());
 
-        txtdes.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(pantalla==0) {
-                    if (!hasFocus) {
-                        //this if condition is true when edittext lost focus...
-                        //check here for number is larger than 10 or not
-                        if (!txtplato.getText().toString().trim().equals("")) {
-                            if (!txtdes.getText().toString().trim().equals("")) {
-                                next();
-                            }
-                        }
-                    }
-                }
-
-
-            }
-        });
-
-
-        txtdes.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
-                    if(!txtplato.getText().toString().trim().equals(""))
-                    {
-                        if(!txtdes.getText().toString().trim().equals(""))
-                        {
-                            // Ocultar el teclado
-                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(txtdes.getWindowToken(), 0);
-
-                            next();
-                        }
-                    }
-
-                    return true;
-                }
-                return false;
-            }
-        });
-
-
-
-        txtofrezco.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(pantalla==1) {
-                        if (!hasFocus) {
-                            if (!txtcosto.getText().toString().trim().equals("")) {
-                                if (!txtraciones.getText().toString().trim().equals("")) {
-
-                                    if (!txtofrezco.getText().toString().trim().equals("")) {
-                                        next();
-                                    }
-                                }
-                            }
-                        }
-                }
-            }
-        });
-
-
-        txtofrezco.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
-                    if(!txtcosto.getText().toString().trim().equals(""))
-                    {
-                        if(!txtraciones.getText().toString().trim().equals(""))
-                        {
-
-                            if(!txtofrezco.getText().toString().trim().equals("")) {
-
-                                // Ocultar el teclado
-                                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(txtofrezco.getWindowToken(), 0);
-
-                                    next();
-
-                            }
-                        }
-                    }
-
-                    return true;
-                }
-                return false;
-            }
-        });
-
-
 
 
         pageIndicatorView = (PageIndicatorView) this.findViewById(R.id.pageIndicatorView);
-        //pageIndicatorView.setViewPager(pager);
+
         pageIndicatorView.setInteractiveAnimation(true);
         pageIndicatorView.setAnimationType(AnimationType.THIN_WORM);
 
-        pageIndicatorView.setCount(4);
+        pageIndicatorView.setCount(2);
         pageIndicatorView.setProgress(0,1);
         pageIndicatorView.setSelectedColor(getResources().getColor(R.color.colorPrimary));
         pageIndicatorView.setUnselectedColor(getResources().getColor(R.color.colorTheText));
@@ -596,6 +588,42 @@ public class AddPlatoActivity extends AppCompatActivity implements
             Constants.explicativo(AddPlatoActivity.this,getString(R.string.plato));
             app.setPlato(1);
         }
+
+
+        placeAutocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        AutocompleteFilter autocompleteFilter = new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS).build();
+
+        ImageView searchIcon = (ImageView)((LinearLayout)placeAutocompleteFragment.getView()).getChildAt(0);
+        ImageView closed = (ImageView)((LinearLayout)placeAutocompleteFragment.getView()).getChildAt(2);
+        busqueda = (TextView) ((LinearLayout)placeAutocompleteFragment.getView()).getChildAt(1);
+
+        busqueda.setTextColor(getColor(R.color.colorSecondaryText));
+        busqueda.setHintTextColor(getColor(R.color.colorSecondaryText));
+        // Set the desired icon
+        searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_search));
+        closed.setImageDrawable(getResources().getDrawable(R.drawable.ic_close));
+
+
+
+        placeAutocompleteFragment.setFilter(autocompleteFilter);
+
+        placeAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                eventSearch(place.getName().toString());
+
+            }
+
+            @Override
+            public void onError(Status status) {
+
+
+            }
+        });
+
+        bmb.setAutoBoom(true);
+
 
     }
 
@@ -842,72 +870,57 @@ public class AddPlatoActivity extends AppCompatActivity implements
         save();
     }
 
-    public void save()
+    public void siguiente(View v)
     {
-        /*String error="";
-        if(spinner.getSelectedItemPosition()==0)
-        {
-            error+=getText(R.string.error_tipo).toString()+"\n";
-        }
         if(txtplato.getText().toString().equals(""))
         {
-            error+=getText(R.string.error_plato).toString()+"\n";
+            txtplato.setError(getText(R.string.error_plato));
+            return;
         }
         if(txtdes.getText().toString().equals(""))
         {
-            error+=getText(R.string.error_des).toString()+"\n";
+            txtdes.setError(getText(R.string.error_des));
+            return;
         }
         if(txtcosto.getText().toString().equals(""))
         {
-            error+=getText(R.string.error_costo).toString()+"\n";
+            txtcosto.setError(getText(R.string.error_costo));
+            return;
         }
         if(txtraciones.getText().toString().equals(""))
         {
-            error+=getText(R.string.error_raciones).toString()+"\n";
+            txtraciones.setError(getText(R.string.error_raciones));
+            return;
         }
         if(txtraciones.getText().toString().equals(""))
         {
-            error+=getText(R.string.error_raciones).toString()+"\n";
+            txtraciones.setError(getText(R.string.error_raciones));
+            return;
         }
         if(txtofrezco.getText().toString().equals(""))
         {
-            error+=getText(R.string.error_ofrezco).toString()+"\n";
+            txtofrezco.setError(getText(R.string.error_ofrezco));
+            return;
         }
         if(txthora.getText().toString().equals(""))
         {
-            error+=getText(R.string.error_hora).toString()+"\n";
+            txthora.setError(getText(R.string.error_hora));
+            return;
         }
         if(txtdia.getText().toString().equals(""))
         {
-            error+=getText(R.string.error_dia).toString()+"\n";
-        }
-        if(image.equals(""))
-        {
-            error+=getText(R.string.error_imagen).toString()+"\n";
-        }
-
-
-        if(!error.equals(""))
-        {
-            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-                mensaje = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog));
-            }
-            else {
-                mensaje = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialog));
-            }
-            mensaje
-                    .setTitle(getText(R.string.error))
-                    .setMessage(error)
-                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
-
-            mensaje.show();
+            txtdia.setError(getText(R.string.error_dia));
             return;
-        }*/
+        }
+
+        next();
+    }
+
+    public void save()
+    {
+
+
+
 
         vf1.setVisibility(View.GONE);
         vf2.setVisibility(View.VISIBLE);
@@ -1090,10 +1103,6 @@ public class AddPlatoActivity extends AppCompatActivity implements
         String date = year + "-" + month + "-" + day;
         txtdia.setText(date);
 
-        if(!txthora.getText().toString().trim().equals(""))
-        {
-                next();
-        }
     }
 
 
@@ -1101,16 +1110,16 @@ public class AddPlatoActivity extends AppCompatActivity implements
     {
 
 
-        /*getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );*/
+        BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.ic_my_location);
 
+        Bitmap b=bitmapdraw.getBitmap();
+        Bitmap smallMarker = Bitmap.createBitmap(b);
         //mapView.setVisibility(View.VISIBLE);
 
         // Add a marker in Sydney and move the camera
         LatLng posicion = new LatLng(Double.parseDouble(lat), Double.parseDouble(log));
         map.clear();
-        map.addMarker(new MarkerOptions().position(posicion).title("Me"));
+        map.addMarker(new MarkerOptions().position(posicion).title("Me")).setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         map.moveCamera(CameraUpdateFactory.newLatLng(posicion));
 
         // Move the camera instantly to Sydney with a zoom of 15.
@@ -1145,7 +1154,7 @@ public class AddPlatoActivity extends AppCompatActivity implements
         progressDialog.setContentView(R.layout.progressdialog);
         progressDialog.setCancelable(false);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constants.URL_GOOGLE+"?address="+search.replaceAll(" ", "%20")+"",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, Constants.URL_GOOGLE+"?address="+search.replaceAll(" ", "%20")+"&key="+getString(R.string.api_maps),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String responde) {
@@ -1279,15 +1288,6 @@ public class AddPlatoActivity extends AppCompatActivity implements
 
     }
 
-    public void search(View v)
-    {
-        // Ocultar el teclado
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(txtsearch.getWindowToken(), 0);
-        if(!txtsearch.getText().toString().equals(getString(R.string.location2))) {
-            eventSearch(txtsearch.getText().toString());
-        }
-    }
 
 
 

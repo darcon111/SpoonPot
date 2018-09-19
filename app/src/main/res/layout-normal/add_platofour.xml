@@ -9,44 +9,14 @@
     android:layout_height="match_parent"
     tools:context="app.com.spoonpot.activity.AddPlatoActivity">
 
-    <TextView
-        android:id="@+id/one"
-        style="@style/textView3"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_weight="1"
-        android:background="@color/colorDivider"
-        android:gravity="center_vertical"
-        android:text="@string/infoc"
-        android:textAlignment="center"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:srcCompat="@drawable/ic_circulosplatofour" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nestedScrollView3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/one">
@@ -57,60 +27,13 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayout9"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp">
 
-                <EditText
-                    android:id="@+id/txtopcional"
-                    style="@style/editText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/opcional" />
-            </android.support.design.widget.TextInputLayout>
 
-            <TextView
-                android:id="@+id/textView4"
-                style="@style/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/colorDivider"
-                android:gravity="center_vertical"
-                android:onClick="showFileChooser"
-                android:text="@string/foto"
-                android:textAlignment="center" />
 
-            <ImageView
-                android:id="@+id/txtImagenTemp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:onClick="showFileChooser"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
-                app:srcCompat="@drawable/ic_arroz" />
 
-            <Button
-                android:id="@+id/btnContinuar"
-                style="@style/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="continuar"
-                android:text="@string/continuar" />
+
+
+
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

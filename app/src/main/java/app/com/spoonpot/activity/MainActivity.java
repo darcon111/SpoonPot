@@ -480,15 +480,11 @@ public class MainActivity extends AppCompatActivity {
         mUserRecyclerView = (RecyclerView) findViewById(R.id.platos_recycler_view);
         // Create a grid layout with two columns
         //GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, 1);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         // Create a custom SpanSizeLookup where the first item spans both columns
 
-        /*layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return position == 0 ? 2 : 1;
-            }
-        });*/
+
+
         int paddingTop = UtilHelper.getToolbarHeight(MainActivity.this) + UtilHelper.getTabsHeight(MainActivity.this);
         mUserRecyclerView.setPadding(mUserRecyclerView.getPaddingLeft(), 150, mUserRecyclerView.getPaddingRight(), mUserRecyclerView.getPaddingBottom());
 
@@ -606,8 +602,11 @@ public class MainActivity extends AppCompatActivity {
             productHolder.mTitle.setText(mListPlato.get(i).getTitle());
             productHolder.mUser.setText(mListPlato.get(i).getUsername().toString());
 
+            DecimalFormat df = new DecimalFormat("#.00");
+            df.setMaximumFractionDigits(2);
+
             Float costo = Float.parseFloat(mListPlato.get(i).getCosto()) / Float.parseFloat(mListPlato.get(i).getRaciones());
-            productHolder.mCosto.setText(String.valueOf(costo));
+            productHolder.mCosto.setText(df.format(costo).toString());
             if (!compareDate(mListPlato.get(i).getDia()+" "+mListPlato.get(i).getHora().replace("h",":"), new SimpleDateFormat("yyyy-MM-dd HH:mm").format(fecha))) {
                 productHolder.mHora.setText(Constants.formatoFecha(mListPlato.get(i).getDia()));
                 productHolder.reloj.setImageResource(R.drawable.ic_reloj);

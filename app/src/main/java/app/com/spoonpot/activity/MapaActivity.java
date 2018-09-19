@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -37,9 +38,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,22 +54,34 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.android.MarkerManager;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.ClusterRenderer;
+
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import app.com.spoonpot.R;
 import app.com.spoonpot.clases.GPS;
 import app.com.spoonpot.clases.ImagenCircular.CircleImageView;
 import app.com.spoonpot.clases.InputFilterMinMax;
 import app.com.spoonpot.config.Constants;
+import app.com.spoonpot.helpers.MyClusterRenderer;
+import app.com.spoonpot.helpers.MyItem;
+import app.com.spoonpot.helpers.MyItemReader;
 import app.com.spoonpot.holder.Friend;
 import app.com.spoonpot.holder.Like;
 import app.com.spoonpot.holder.Notificacion;
@@ -115,6 +130,8 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
     private boolean like=false;
     private int idlike = -1;
 
+    private ClusterManager<MyItem> mClusterManager;
+
 
 
     @Override
@@ -148,6 +165,8 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
         }
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+
         mapView = (MapView) findViewById(R.id.mapa);
         mapView.onCreate(savedInstanceState);
 
@@ -155,6 +174,58 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map=googleMap;
+
+                try {
+                    boolean success = map.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                    MapaActivity.this, R.raw.mapstyle));
+
+                    if (!success) {
+                        Log.e(TAG, "Style parsing failed.");
+                    }
+                } catch (Resources.NotFoundException e) {
+                    Log.e(TAG, "Can't find style. Error: ", e);
+                }
+
+                UiSettings mapUiSettings = map.getUiSettings();
+                mapUiSettings.setZoomControlsEnabled(true);
+                mapUiSettings.setAllGesturesEnabled(true);
+                mapUiSettings.setScrollGesturesEnabled(true);
+                mapUiSettings.setZoomGesturesEnabled(true);
+                mapUiSettings.setMapToolbarEnabled(false);
+
+                mClusterManager = new ClusterManager<MyItem>(MapaActivity.this, map);
+
+
+                map.setOnMarkerClickListener(mClusterManager);
+
+                mClusterManager.setRenderer(new MyClusterRenderer(MapaActivity.this, map,
+                        mClusterManager));
+
+
+
+                mClusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<MyItem>() {
+                    @Override
+                    public void onClusterItemInfoWindowClick(MyItem myItem) {
+                        myItem.getIndex();
+
+                        if(myItem.getIndex()!=-1) {
+
+                            Dialog(myItem.getIndex());
+
+                            //showplato(mListUser.get(myItem.getIndex()).getFirebaseId());
+                        }
+
+                    }
+                });
+
+                map.setOnInfoWindowClickListener(mClusterManager); //added
+
+                map.setOnCameraIdleListener(mClusterManager);
+
+
+                map.setOnMarkerClickListener(mClusterManager);
+
                 changePosition();
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.setOnMarkerClickListener(MapaActivity.this);
@@ -260,14 +331,14 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
         // Add a marker in Sydney and move the camera
         LatLng posicion = new LatLng(Double.parseDouble(lat), Double.parseDouble(log));
 
-        Marker marker = map.addMarker(new MarkerOptions()
+        /*Marker marker = map.addMarker(new MarkerOptions()
                 .position(posicion)
                 .title(name)
                 //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cocinero2))
-        );
+        );*/
 
         int height = 80;
-        int width = 70;
+        int width = 60;
 
         BitmapDrawable bitmapdraw=null;
 
@@ -281,31 +352,22 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
         {
             if(mListUser.get(position).getFirebaseId().equals(user.getUid()))
             {
-                // marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cocinero3));
                 bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.ic_cocinero3);
             }else {
-                //marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cocinero2));
+
                 bitmapdraw=(BitmapDrawable)getResources().getDrawable(R.drawable.ic_cocinero2);
             }
         }
 
         Bitmap b=bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-        marker.setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        //marker.setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
 
-        marker.setTag(position);
+        //marker.setTag(position);
 
 
-
-        // create marker
-        /*Marker marker = new MarkerOptions().position(new LatLng(Double.parseDouble(lat),
-                Double.parseDouble(lat))).title(name);
-        marker.setTag(0);
-        // Changing marker icon
-        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_comensal));*/
-
-        // adding marker
-        //map.addMarker(marker);
+        MyItem offsetItem = new MyItem(Double.parseDouble(lat), Double.parseDouble(log),name,"",BitmapDescriptorFactory.fromBitmap(smallMarker),position);
+        mClusterManager.addItem(offsetItem);
 
 
     }
@@ -420,7 +482,7 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
 
     }
 
-    /*public void Dialog(final int index)
+    public void Dialog(final int index)
     {
         final Dialog settingsDialog = new Dialog(this,R.style.CustomDialog);
         settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -449,7 +511,7 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
         imagendescri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                settingsDialog.dismiss();
                 showDescri(index);
             }
         });
@@ -509,7 +571,7 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         settingsDialog.show();
         settingsDialog.getWindow().setAttributes(lp);
-    }*/
+    }
 
 
     @Override
@@ -582,19 +644,25 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
                         bar.setRating(Float.parseFloat("0"));
                     }
 
-
-                    if(!temp[0].getUrl_imagen().equals(""))
+                    if(temp[0].getUrl_imagen()!=null)
                     {
-                        Glide.with(getApplicationContext()).load(temp[0].getUrl_imagen())
-                                .thumbnail(1.0f)
-                                .crossFade()
-                                .override(65,65)
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .into(imgUser);
+                        if(!temp[0].getUrl_imagen().equals(""))
+                        {
+                            Glide.with(getApplicationContext()).load(temp[0].getUrl_imagen())
+                                    .thumbnail(1.0f)
+                                    .crossFade()
+                                    .override(65,65)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(imgUser);
+                        }else
+                        {
+                            imgUser.setImageResource(R.drawable.ic_user);
+                        }
                     }else
                     {
-                        imgUser.setImageResource(R.drawable.ic_user);
+                            imgUser.setImageResource(R.drawable.ic_user);
                     }
+
                     imgUser.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -765,16 +833,6 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
 
 
 
-
-
-
-
-
-
-
-
-
-
                 }
             });
             }else
@@ -895,7 +953,6 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
         // Add a marker in Sydney and move the camera
         LatLng posicion = new LatLng(gps.getLatitude(), gps.getLongitude());
         map.clear();
-        map.addMarker(new MarkerOptions().position(posicion).title("Me").icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
         map.moveCamera(CameraUpdateFactory.newLatLng(posicion));
         // Move the camera instantly to Sydney with a zoom of 15.
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(posicion, 15));
@@ -917,6 +974,9 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
 
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
+
+        MyItem offsetItem = new MyItem(gps.getLatitude(), gps.getLongitude(),"me","",BitmapDescriptorFactory.fromBitmap(smallMarker),-1);
+        mClusterManager.addItem(offsetItem);
 
         databaseUsers.addValueEventListener(new ValueEventListener() {
             @Override
@@ -1054,7 +1114,6 @@ public class MapaActivity extends AppCompatActivity implements GoogleMap.OnMarke
 
         }
     }
-
 
 
 }
